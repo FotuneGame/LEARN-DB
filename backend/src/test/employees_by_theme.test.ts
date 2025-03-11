@@ -27,7 +27,7 @@ describe("DB: Table employees_by_theme:", () => {
 
 
     const theme = await themes.create({
-        name: "ПК"
+        name: "Транспорт"
     });
     if(theme)
         id_theme = theme[0].id;

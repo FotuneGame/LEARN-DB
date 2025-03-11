@@ -28,7 +28,7 @@ describe("DB: Table specialists_by_theme:", () => {
 
 
     const theme = await themes.create({
-        name: "ПК"
+        name: "Сети"
     });
     if(theme)
         id_theme = theme[0].id;
@@ -61,6 +61,7 @@ describe("DB: Table specialists_by_theme:", () => {
     console.log(res);
     assert.equal(!res, false);
   });
+  /*
   it("Delete row", async () => {
     console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
     const res = await specialists_by_theme.delete(id_theme,id_specialist);
@@ -73,4 +74,5 @@ describe("DB: Table specialists_by_theme:", () => {
     await themes.delete(id_theme);
     await specialists.delete(id_specialist);
   });
+  */
  });

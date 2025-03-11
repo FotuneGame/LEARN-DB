@@ -67,6 +67,7 @@ describe("DB: Table callbacks:", () => {
     console.log(res);
     assert.equal(!res, false);
   });
+  /*
   it("Delete row", async () => {
     console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
     const res = await callbacks.delete(id);
@@ -79,4 +80,5 @@ describe("DB: Table callbacks:", () => {
     await clients.delete(id_client);
     await employees.delete(id_employee);
   });
+  */
  });

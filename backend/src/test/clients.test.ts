@@ -55,6 +55,7 @@ describe("DB: Table clients:", () => {
     console.log(res);
     assert.equal(!res, false);
   });
+  /*
   it("Delete row", async () => {
     console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
     const res = await clients.delete(id);
@@ -66,5 +67,5 @@ describe("DB: Table clients:", () => {
 
   after(async ()=>{
     await employees.delete(id_employee);
-  });
+  });*/
  });

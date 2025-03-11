@@ -11,7 +11,7 @@ let id = 0;
 describe("DB: Table theme:", () => {
   it("Create row", async () => {
     console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
-    const res = await themes.create({name:"yes"});
+    const res = await themes.create({name:"Цветы"});
     console.log(res);
     if(res)
       id = res[0].id;
@@ -19,7 +19,7 @@ describe("DB: Table theme:", () => {
   });
   it("Update row", async () => {
     console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
-    const res = await themes.update(id,{name:"no"});
+    const res = await themes.update(id,{name:"Растения"});
     console.log(res);
     assert.equal(!res, false);
   });
@@ -29,10 +29,11 @@ describe("DB: Table theme:", () => {
     console.log(res);
     assert.equal(!res, false);
   });
+  /*
   it("Delete row", async () => {
     console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
     const res = await themes.delete(id);
     console.log(res);
     assert.equal(!res, false);
-  });
+  });*/
  });

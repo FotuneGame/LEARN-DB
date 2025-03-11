@@ -90,10 +90,10 @@ class SpecialistTable implements ITable, ICRUD{
                 first_name=$1,
                 second_name=$2,
                 middle_name=$3,
-                profession=$4,
-                adress=$5,
-                phone=$6,
-                email=$7 WHERE id=$8 RETURNING *;`,
+                phone=$4,
+                email=$5,
+                adress=$6,
+                profession=$7 WHERE id=$8 RETURNING *;`,
                 [data.first_name, data.second_name, data.middle_name, data.phone, data.email, data.adress, data.profession, id]
         );
             return result.rows;

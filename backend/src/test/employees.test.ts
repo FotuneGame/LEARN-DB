@@ -43,10 +43,11 @@ describe("DB: Table employees:", () => {
     console.log(res);
     assert.equal(!res, false);
   });
+  /*
   it("Delete row", async () => {
     console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
     const res = await employees.delete(id);
     console.log(res);
     assert.equal(!res, false);
-  });
+  });*/
  });

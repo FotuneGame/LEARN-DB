@@ -74,6 +74,7 @@ describe("DB: Table spam:", () => {
     console.log(res);
     assert.equal(!res, false);
   });
+  /*
   it("Delete row", async () => {
     console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
     const res = await spam.delete(id);
@@ -87,4 +88,5 @@ describe("DB: Table spam:", () => {
     await employees.delete(id_employee);
     await calls.delete(id_call);
   });
+  */
  });

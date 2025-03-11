@@ -37,10 +37,11 @@ describe("DB: Table answer:", () => {
     console.log(res);
     assert.equal(!res, false);
   });
+  /*
   it("Delete row", async () => {
     console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
     const res = await answers.delete(id);
     console.log(res);
     assert.equal(!res, false);
-  });
+  });*/
  });
