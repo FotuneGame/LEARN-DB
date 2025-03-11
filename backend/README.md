@@ -10,3 +10,8 @@ npm run build
 ```
 npm run start
 ```
+
+### Запуск теста после сборки
+```
+npm run test
+```
