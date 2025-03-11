@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Тесовое задание для deepra</title>
+    <link href="/static/style.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Monomakh&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <content>
+        <div class="card">
+            <strong>Свершилось чудо</strong>
+            <p>Посмотрите адресную строку</p>
+            <div class="card">
+                <div>
+                    <h3 id="name"></h3>
+                    <p id="message"></p>
+                </div>
+            </div>
+            <button id="back">Вернуться</button>
+        </div>
+    </content>
+</body>
+<script>
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const params = Object.fromEntries(urlSearchParams.entries());
+
+    if(params.name && params.message){
+        document.getElementById("name").innerText = params.name;
+        document.getElementById("message").innerText = params.message;
+    }else{
+        document.getElementById("name").innerText = "Простите";
+        document.getElementById("message").innerText = "Но что-то не дошло";
+    }
+
+    const btn = document.getElementById("back");
+    btn.addEventListener("click",()=>{
+        location.href = "/";
+    })
+</script>
+</html>

@@ -1,0 +1,31 @@
+{
+  "name": "learn-db",
+  "version": "1.0.0",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "This project for learn SQL in PostgreeSQL",
+  "scripts": {
+    "dev": "SET NODE_ENV=development && nodemon src/index.ts ",
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "test": "mocha dist/test/**/*.test.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "pg": "^8.13.3"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/mocha": "^10.0.10",
+    "@types/pg": "^8.11.11",
+    "mocha": "^11.1.0",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  }
+}

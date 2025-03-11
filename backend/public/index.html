@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Тесовое задание для deepra</title>
+    <link href="/static/style.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Monomakh&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <content>
+        <div class="card">
+            <strong>Нажми на кнопку для появления чуда</strong>
+            <button id="wow">Чудо</button>
+        </div>
+    </content>
+</body>
+<script>
+    const btn = document.getElementById("wow");
+    btn.addEventListener("click",()=>{
+        location.href = "/?" + new URLSearchParams({
+                name: 'Recruto',
+                message: "Давай дружить"
+        }).toString();
+    })
+</script>
+</html>
