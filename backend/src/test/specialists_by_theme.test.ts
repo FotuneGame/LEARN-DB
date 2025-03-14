@@ -55,13 +55,12 @@ describe("DB: Table specialists_by_theme:", () => {
     console.log(res);
     assert.equal(!res, false);
   });
-  it("Read row", async () => {
+  it("ReadAll row", async () => {
     console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
-    const res = await specialists_by_theme.read(id_theme,true,0,0);
+    const res = await specialists_by_theme.readAll(id_theme,true,0,0);
     console.log(res);
     assert.equal(!res, false);
   });
-  /*
   it("Delete row", async () => {
     console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
     const res = await specialists_by_theme.delete(id_theme,id_specialist);
@@ -74,5 +73,4 @@ describe("DB: Table specialists_by_theme:", () => {
     await themes.delete(id_theme);
     await specialists.delete(id_specialist);
   });
-  */
  });

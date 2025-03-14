@@ -38,7 +38,7 @@ describe("DB: Table spam:", () => {
 
 
     const call = await calls.create({
-        phone: "123456789012",
+        phone: "75775755757",
         date: new Date(), //YYYY-MM-DD
         time: new Date((60*60*60)) //HH:MM:SS
     })
@@ -70,11 +70,17 @@ describe("DB: Table spam:", () => {
   });
   it("Read row", async () => {
     console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
-    const res = await spam.read(false,id,0);
+    const res = await spam.read(id);
     console.log(res);
     assert.equal(!res, false);
   });
-  /*
+  it("ReadAll row", async () => {
+    console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
+    const res = await spam.readAll(false,id,0);
+    console.log(res);
+    assert.equal(!res, false);
+  });
+
   it("Delete row", async () => {
     console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
     const res = await spam.delete(id);
@@ -88,5 +94,4 @@ describe("DB: Table spam:", () => {
     await employees.delete(id_employee);
     await calls.delete(id_call);
   });
-  */
  });

@@ -80,7 +80,19 @@ class SpamTable implements ITable, ICRUD{
         }
     }
 
-    async read(all:boolean,limit:number, offset:number){
+    async read(id:number){
+        try{
+            const result = await pool.query(`SELECT * FROM ${this.name} WHERE id=$1;`,
+                [id]
+            );
+            return result.rows;
+        }catch(err){
+            console.log(err);
+            return false;
+        }
+    }
+
+    async readAll(all:boolean,limit:number, offset:number){
         try{
             if(all){
                 const result = await pool.query(`SELECT * FROM ${this.name};`);

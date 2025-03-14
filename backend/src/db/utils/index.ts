@@ -1,4 +1,4 @@
-import { TablesType } from "../types";
+import { TablesType, ObjectsType } from "../types";
 
 
 
@@ -26,6 +26,21 @@ export const addConnectionTables = async (tables:TablesType)=>{
                 console.log(`[addConnectionTables] ${tables[el].name}: true`);
             else
                 console.error("[addConnectionTables] Error addConnectionTable in : " + tables[el].name);
+        }
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+
+export const addObjectDB= async (obj:ObjectsType) =>{
+    try {
+        for (let el in obj){
+            const result = await obj[el].init();
+            if(result)
+                console.log(`[addObjectDB] ${obj[el].name}: true`);
+            else
+                console.error("[addObjectDB] Error addObjectDB in : " + obj[el].name);
         }
     } catch (err) {
         console.error(err);

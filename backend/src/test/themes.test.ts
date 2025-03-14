@@ -25,15 +25,20 @@ describe("DB: Table theme:", () => {
   });
   it("Read row", async () => {
     console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
-    const res = await themes.read(false,id,0);
+    const res = await themes.read(id);
     console.log(res);
     assert.equal(!res, false);
   });
-  /*
+  it("ReadAll row", async () => {
+    console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
+    const res = await themes.readAll(false,id,0);
+    console.log(res);
+    assert.equal(!res, false);
+  });
   it("Delete row", async () => {
     console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
     const res = await themes.delete(id);
     console.log(res);
     assert.equal(!res, false);
-  });*/
+  });
  });

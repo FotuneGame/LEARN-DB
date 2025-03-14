@@ -63,11 +63,17 @@ describe("DB: Table callbacks:", () => {
   });
   it("Read row", async () => {
     console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
-    const res = await callbacks.read(false,id,0);
+    const res = await callbacks.read(id);
     console.log(res);
     assert.equal(!res, false);
   });
-  /*
+  it("ReadAll row", async () => {
+    console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
+    const res = await callbacks.readAll(false,id,0);
+    console.log(res);
+    assert.equal(!res, false);
+  });
+  
   it("Delete row", async () => {
     console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
     const res = await callbacks.delete(id);
@@ -80,5 +86,4 @@ describe("DB: Table callbacks:", () => {
     await clients.delete(id_client);
     await employees.delete(id_employee);
   });
-  */
  });

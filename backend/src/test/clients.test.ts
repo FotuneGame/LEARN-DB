@@ -51,11 +51,17 @@ describe("DB: Table clients:", () => {
   });
   it("Read row", async () => {
     console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
-    const res = await clients.read(false,id,0);
+    const res = await clients.read(id);
     console.log(res);
     assert.equal(!res, false);
   });
-  /*
+  it("ReadAll row", async () => {
+    console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
+    const res = await clients.readAll(false,id,0);
+    console.log(res);
+    assert.equal(!res, false);
+  });
+  
   it("Delete row", async () => {
     console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
     const res = await clients.delete(id);
@@ -67,5 +73,5 @@ describe("DB: Table clients:", () => {
 
   after(async ()=>{
     await employees.delete(id_employee);
-  });*/
+  });
  });

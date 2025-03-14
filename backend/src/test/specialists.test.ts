@@ -39,17 +39,22 @@ describe("DB: Table specialists:", () => {
     console.log(res);
     assert.equal(!res, false);
   });
-  it("Read row", async () => {
-    console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
-    const res = await specialists.read(false,id,0);
-    console.log(res);
-    assert.equal(!res, false);
-  });
-  /*
+    it("Read row", async () => {
+      console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
+      const res = await specialists.read(id);
+      console.log(res);
+      assert.equal(!res, false);
+    });
+    it("ReadAll row", async () => {
+      console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
+      const res = await specialists.readAll(false,id,0);
+      console.log(res);
+      assert.equal(!res, false);
+    });
   it("Delete row", async () => {
     console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
     const res = await specialists.delete(id);
     console.log(res);
     assert.equal(!res, false);
-  });*/
+  });
  });

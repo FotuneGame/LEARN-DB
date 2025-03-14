@@ -54,7 +54,11 @@ class SpecialistsByThemeTable implements ITable, ICRUD{
         }
     }
 
-    async read(id_theme:number, all:boolean,limit:number, offset:number){
+    async read(id:number){
+        return true;
+    }
+
+    async readAll(id_theme:number, all:boolean,limit:number, offset:number){
         try{
             if(all){
                 const result = await pool.query(`SELECT * FROM ${this.name} WHERE id_theme=$1;`, [id_theme]);

@@ -1,6 +1,10 @@
 import {pool} from "./pool";
 import {tabels} from "./tables";
-import {createTables, addConnectionTables} from "./utils";
+import { dbTriggers } from "./triggers";
+import { dbFunctions } from "./functions";
+import { dbProcedures } from "./procedures";
+import { dbRepresentation } from "./representation";
+import {createTables, addConnectionTables, addObjectDB} from "./utils";
 
 
 
@@ -13,6 +17,11 @@ export const poolSync = ()=>{
           try{
             await createTables(tabels);
             await addConnectionTables(tabels);
+
+            await addObjectDB(dbTriggers);
+            await addObjectDB(dbFunctions);
+            await addObjectDB(dbProcedures);
+            await addObjectDB(dbRepresentation);
           }catch(err){
             console.error(err);
           }

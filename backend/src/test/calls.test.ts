@@ -33,15 +33,21 @@ describe("DB: Table calls:", () => {
   });
   it("Read row", async () => {
     console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
-    const res = await calls.read(false,id,0);
+    const res = await calls.read(id);
     console.log(res);
     assert.equal(!res, false);
   });
-  /*
+  it("ReadAll row", async () => {
+    console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
+    const res = await calls.readAll(false,id,0);
+    console.log(res);
+    assert.equal(!res, false);
+  });
+  
   it("Delete row", async () => {
     console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
     const res = await calls.delete(id);
     console.log(res);
     assert.equal(!res, false);
-  });*/
+  });
  });
