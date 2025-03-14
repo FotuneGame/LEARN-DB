@@ -33,7 +33,7 @@ class callsInSpam implements IObjectDB{
                 `);
             
             const res = await pool.query(`
-                    CREATE TRIGGER ${this.name}
+                    CREATE OR REPLACE TRIGGER ${this.name}
                     BEFORE INSERT OR UPDATE ON calls
                     FOR EACH ROW
                     EXECUTE FUNCTION function_check_spam_by_phone();

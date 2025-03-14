@@ -17,7 +17,7 @@ describe("DB: Procedure:", () => {
     console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
     const res= await changeEmployee.call(1,"faafadf","Верreхмат","reererq");
     console.log("Процедура и не должна ничего возвращать: ",res);
-    assert.equal(!res, false);
+    assert.equal(!res, true);
   });
 
 

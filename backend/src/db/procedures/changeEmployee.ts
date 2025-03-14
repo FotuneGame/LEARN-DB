@@ -31,7 +31,7 @@ class changeEmployee implements IObjectDB{
                         SET id_employee = emp_id
                         WHERE id = id_client;
                     ELSE
-                        RAISE NOTICE 'Сотрудник с ФИО % % % не найден.', employee_first_name, employee_second_name, employee_middle_name;
+                        RAISE EXCEPTION  'Сотрудник с ФИО % % % не найден.', employee_first_name, employee_second_name, employee_middle_name;
                     END IF;
                 END;
                 $$ LANGUAGE plpgsql;
