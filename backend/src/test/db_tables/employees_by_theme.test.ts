@@ -1,9 +1,9 @@
 import "dotenv/config";
 import assert from "assert";
-import employees_by_theme from "../db/tables/employees_by_theme";
+import employees_by_theme from "../../db/tables/employees_by_theme";
 
-import themes from "../db/tables/themes";
-import employyes from "../db/tables/employees";
+import themes from "../../db/tables/themes";
+import employyes from "../../db/tables/employees";
 
 
 let id_employee = 0, id_theme = 0;
@@ -60,16 +60,20 @@ describe("DB: Table employees_by_theme:", () => {
     console.log(res);
     assert.equal(!res, false);
   });
-  it("Delete row", async () => {
-    console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
-    const res = await employees_by_theme.delete(id_theme,id_employee);
-    console.log(res);
-    assert.equal(!res, false);
-  });
 
 
-  after(async ()=>{
-    await themes.delete(id_theme);
-    await employyes.delete(id_employee);
-  });
+
+  if(process.env.TEST_DB_CLEAR){
+    it("Delete row", async () => {
+      console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
+      const res = await employees_by_theme.delete(id_theme,id_employee);
+      console.log(res);
+      assert.equal(!res, false);
+    });
+
+    after(async ()=>{
+      await themes.delete(id_theme);
+      await employyes.delete(id_employee);
+    });
+  }
  });

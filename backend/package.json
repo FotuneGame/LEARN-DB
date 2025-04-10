@@ -10,7 +10,9 @@
     "dev": "SET NODE_ENV=development && nodemon src/index.ts ",
     "start": "node dist/index.js",
     "build": "tsc",
-    "test": "mocha dist/test/**/*.test.js"
+    "test:db_tables": "mocha dist/test/db_tables/**/*.test.js",
+    "test:db_other": "mocha dist/test/db_other/**/*.test.js",
+    "test:db_statistics": "mocha dist/test/db_statistics/**/*.test.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

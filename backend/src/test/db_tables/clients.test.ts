@@ -1,7 +1,7 @@
 import "dotenv/config";
 import assert from "assert";
-import clients from "../db/tables/clients";
-import employees from "../db/tables/employees";
+import clients from "../../db/tables/clients";
+import employees from "../../db/tables/employees";
 
 
 let id_employee = 0, id = 0;
@@ -62,16 +62,18 @@ describe("DB: Table clients:", () => {
     assert.equal(!res, false);
   });
   
-  it("Delete row", async () => {
-    console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
-    const res = await clients.delete(id);
-    console.log(res);
-    assert.equal(!res, false);
-  });
 
-  
 
-  after(async ()=>{
-    await employees.delete(id_employee);
-  });
+  if(process.env.TEST_DB_CLEAR){
+    it("Delete row", async () => {
+      console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
+      const res = await clients.delete(id);
+      console.log(res);
+      assert.equal(!res, false);
+    });
+
+    after(async ()=>{
+      await employees.delete(id_employee);
+    });
+  }
  });

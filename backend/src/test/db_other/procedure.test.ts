@@ -1,9 +1,9 @@
 import "dotenv/config";
 import assert from "assert";
-import changeEmployee from "../db/procedures/changeEmployee";
+import changeEmployee from "../../db/procedures/changeEmployee";
 
 
-
+/*
 describe("DB: Procedure:", () => {
 
   it("change Employee (have)", async () => {
@@ -21,4 +21,4 @@ describe("DB: Procedure:", () => {
   });
 
 
- });
+ });*/

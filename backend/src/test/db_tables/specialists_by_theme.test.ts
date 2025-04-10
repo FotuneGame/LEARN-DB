@@ -1,9 +1,9 @@
 import "dotenv/config";
 import assert from "assert";
-import specialists_by_theme from "../db/tables/specialists_by_theme";
+import specialists_by_theme from "../../db/tables/specialists_by_theme";
 
-import themes from "../db/tables/themes";
-import specialists from "../db/tables/specialists";
+import themes from "../../db/tables/themes";
+import specialists from "../../db/tables/specialists";
 
 
 let id_specialist = 0, id_theme = 0;
@@ -61,16 +61,20 @@ describe("DB: Table specialists_by_theme:", () => {
     console.log(res);
     assert.equal(!res, false);
   });
-  it("Delete row", async () => {
-    console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
-    const res = await specialists_by_theme.delete(id_theme,id_specialist);
-    console.log(res);
-    assert.equal(!res, false);
-  });
 
 
-  after(async ()=>{
-    await themes.delete(id_theme);
-    await specialists.delete(id_specialist);
-  });
+
+  if(process.env.TEST_DB_CLEAR){
+    it("Delete row", async () => {
+      console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
+      const res = await specialists_by_theme.delete(id_theme,id_specialist);
+      console.log(res);
+      assert.equal(!res, false);
+    });
+
+    after(async ()=>{
+      await themes.delete(id_theme);
+      await specialists.delete(id_specialist);
+    });
+  }
  });

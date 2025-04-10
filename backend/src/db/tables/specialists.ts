@@ -126,6 +126,85 @@ class SpecialistTable implements ITable, ICRUD{
             return false;
         }
     }
+
+
+
+    async statics(){
+        try{
+            const result = await pool.query(`
+                WITH specialist_stats AS (
+                    SELECT
+                        s.id AS id,
+                        s.first_name,
+                        s.second_name,
+                        s.middle_name,
+                        s.profession,
+                        COUNT(DISTINCT p.id) AS total_assigned_problems,
+                        COUNT(DISTINCT CASE WHEN lp.is_solve = TRUE THEN p.id END) AS solved_problems,
+                        ARRAY_AGG(DISTINCT t.id) AS assigned_theme_ids
+                    FROM
+                        specialists s
+                    LEFT JOIN
+                        specialists_by_theme st ON s.id = st.id_specialist
+                    LEFT JOIN
+                        themes t ON st.id_theme = t.id
+                    LEFT JOIN
+                        problems p ON (t.id = p.id_theme AND p.id_specialist = s.id)
+                    LEFT JOIN
+                        list_problems_client lp ON p.id = lp.id_problem
+                    GROUP BY
+                        s.id, s.first_name, s.second_name, s.middle_name, s.profession
+                ),
+
+                current_problems AS (
+                    SELECT
+                        p.id AS id_problem,
+                        p.name AS problem_name,
+                        t.id AS id_theme,
+                        t.name AS theme_name,
+                        COUNT(DISTINCT p.id) AS active_problems_count,
+                        ARRAY_AGG(DISTINCT p.id) AS active_problem_ids
+                    FROM
+                        problems p
+                    JOIN
+                        list_problems_client lp ON p.id = lp.id_problem
+                    JOIN
+                        themes t ON p.id_theme = t.id
+                    WHERE
+                        lp.is_solve = FALSE
+                        AND p.id_specialist IS NULL
+                    GROUP BY
+                        p.id, p.name, t.id, t.name
+                )
+
+                SELECT
+                    ss.id,
+                    ss.first_name,
+                    ss.second_name,
+                    ss.middle_name,
+                    ss.profession,
+                    ss.total_assigned_problems,
+                    ss.solved_problems,
+                    ss.assigned_theme_ids,
+                    COALESCE(cp.active_problems_count,0) AS active_problems_count,
+                    cp.active_problem_ids
+                FROM
+                    specialist_stats ss
+                LEFT JOIN
+                    current_problems cp ON cp.id_theme = ANY(ss.assigned_theme_ids)
+                GROUP BY
+                    ss.id, ss.first_name, ss.second_name, ss.middle_name, ss.profession,
+                    ss.total_assigned_problems, ss.solved_problems,ss.assigned_theme_ids,
+                    cp.active_problems_count, cp.active_problem_ids
+                ORDER BY
+                    active_problems_count DESC NULLS LAST;
+            `);
+            return result.rows;
+        }catch(err){
+            console.log(err);
+            return false;
+        }
+    }
 }
 
 export default new SpecialistTable();

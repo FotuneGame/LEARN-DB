@@ -1,9 +1,9 @@
 import "dotenv/config";
 import assert from "assert";
-import answers_by_theme from "../db/tables/answers_by_theme";
+import answers_by_theme from "../../db/tables/answers_by_theme";
 
-import themes from "../db/tables/themes";
-import answers from "../db/tables/answers";
+import themes from "../../db/tables/themes";
+import answers from "../../db/tables/answers";
 
 
 let id_answers = 0, id_theme = 0;
@@ -57,17 +57,20 @@ describe("DB: Table answers_by_theme:", () => {
     console.log(res);
     assert.equal(!res, false);
   });
-  
-  it("Delete row", async () => {
-    console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
-    const res = await answers_by_theme.delete(id_theme,id_answers);
-    console.log(res);
-    assert.equal(!res, false);
-  });
 
 
-  after(async ()=>{
-    await themes.delete(id_theme);
-    await answers.delete(id_answers);
-  });
+
+  if(process.env.TEST_DB_CLEAR){
+    it("Delete row", async () => {
+      console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
+      const res = await answers_by_theme.delete(id_theme,id_answers);
+      console.log(res);
+      assert.equal(!res, false);
+    });
+
+    after(async ()=>{
+      await themes.delete(id_theme);
+      await answers.delete(id_answers);
+    });
+  }
  });

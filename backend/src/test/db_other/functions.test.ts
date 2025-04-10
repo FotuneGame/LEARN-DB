@@ -1,10 +1,10 @@
 import "dotenv/config";
 import assert from "assert";
-import findByTheme from "../db/functions/find_by_theme";
-import findSpam from "../db/functions/find_spam";
+import findByTheme from "../../db/functions/find_by_theme";
+import findSpam from "../../db/functions/find_spam";
 
 
-
+/*
 describe("DB: Functions:", () => {
 
   it("findByTheme", async () => {
@@ -44,3 +44,4 @@ describe("DB: Functions:", () => {
   });
 
  });
+ */

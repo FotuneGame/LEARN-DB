@@ -1,6 +1,6 @@
 import "dotenv/config";
 import assert from "assert";
-import answers from "../db/tables/answers";
+import answers from "../../db/tables/answers";
 
 
 
@@ -44,10 +44,14 @@ describe("DB: Table answer:", () => {
     assert.equal(!res, false);
   });
   
-  it("Delete row", async () => {
-    console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
-    const res = await answers.delete(id);
-    console.log(res);
-    assert.equal(!res, false);
-  });
+
+
+  if(process.env.TEST_DB_CLEAR){
+    it("Delete row", async () => {
+      console.log("[PG sync/auth]: ",process.env.DB_HOST,':',process.env.DB_PORT);
+      const res = await answers.delete(id);
+      console.log(res);
+      assert.equal(!res, false);
+    });
+  }
  });

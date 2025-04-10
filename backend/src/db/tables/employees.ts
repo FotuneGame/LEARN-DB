@@ -123,6 +123,42 @@ class EmployeeTable implements ITable, ICRUD{
             return false;
         }
     }
+
+
+    async statics(){
+        try{
+            const result = await pool.query(`
+                SELECT 
+                    e.id AS id,
+                    e.first_name,
+                    e.second_name,
+                    e.middle_name,
+                    e.post,
+                    COUNT(DISTINCT c.id) AS total_clients_assigned,
+                    COUNT(DISTINCT CASE WHEN lpc.is_solve = TRUE THEN lpc.id_client END) AS clients_with_solved_problems,
+                    COUNT(DISTINCT lpc.id_problem) AS total_problems_handled,
+                    COUNT(DISTINCT CASE WHEN lpc.is_solve = TRUE THEN lpc.id_problem END) AS solved_problems
+                FROM 
+                    employees e
+                LEFT JOIN 
+                    clients c ON e.id = c.id_employee
+                LEFT JOIN 
+                    list_problems_client lpc ON c.id = lpc.id_client
+                GROUP BY 
+                    e.id,
+                    e.first_name,
+                    e.second_name,
+                    e.middle_name,
+                    e.post
+                ORDER BY 
+                    total_clients_assigned DESC;
+            `);
+            return result.rows;
+        }catch(err){
+            console.log(err);
+            return false;
+        }
+    }
 }
 
 export default new EmployeeTable();

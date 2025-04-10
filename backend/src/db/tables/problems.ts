@@ -4,17 +4,19 @@ import {pool} from "../pool";
 
 
 interface IData{
-    id_problem: number,
-    phone:string,
-    email:string
+    id_theme: number | null,
+    id_employee: number | null,
+    id_answer: number | null,
+    id_specialist: number | null,
+    name: string,
+    describe: string
 }
 
 
 
+class ProblemsTable implements ITable, ICRUD{
 
-class CallbackTable implements ITable, ICRUD{
-
-    public readonly name = 'callbacks';
+    public readonly name = 'problems';
 
 
     
@@ -23,8 +25,8 @@ class CallbackTable implements ITable, ICRUD{
             const result = await pool.query(`
                 CREATE TABLE IF NOT EXISTS ${this.name} (
                     id SERIAL PRIMARY KEY,
-                    phone CHARACTER VARYING(32),
-                    email CHARACTER VARYING(128)
+                    name CHARACTER VARYING(256),
+                    describe TEXT
                 );
             `);
             return result;
@@ -43,9 +45,36 @@ class CallbackTable implements ITable, ICRUD{
                         SELECT 1 
                         FROM information_schema.columns 
                         WHERE table_name = '${this.name}' 
-                        AND column_name = 'id_problem'
+                        AND column_name = 'id_theme'
                     ) THEN
-                        ALTER TABLE ${this.name} ADD COLUMN id_problem INT NOT NULL REFERENCES problems ON DELETE CASCADE;
+                        ALTER TABLE ${this.name} ADD COLUMN id_theme INT REFERENCES themes;
+                    END IF;
+
+                    IF NOT EXISTS (
+                        SELECT 1 
+                        FROM information_schema.columns 
+                        WHERE table_name = '${this.name}' 
+                        AND column_name = 'id_employee'
+                    ) THEN
+                        ALTER TABLE ${this.name} ADD COLUMN id_employee INT REFERENCES employees;
+                    END IF;
+
+                    IF NOT EXISTS (
+                        SELECT 1 
+                        FROM information_schema.columns 
+                        WHERE table_name = '${this.name}' 
+                        AND column_name = 'id_specialist'
+                    ) THEN
+                        ALTER TABLE ${this.name} ADD COLUMN id_specialist INT REFERENCES specialists;
+                    END IF;
+
+                    IF NOT EXISTS (
+                        SELECT 1 
+                        FROM information_schema.columns 
+                        WHERE table_name = '${this.name}' 
+                        AND column_name = 'id_answer'
+                    ) THEN
+                        ALTER TABLE ${this.name} ADD COLUMN id_answer INT REFERENCES answers;
                     END IF;
                 END $$;
             `);
@@ -58,16 +87,18 @@ class CallbackTable implements ITable, ICRUD{
 
 
 
-
     //CRUD
     async create(data:IData){
         try{
             const result = await pool.query(`INSERT INTO ${this.name} (
-                id_problem,
-                phone,
-                email
-            ) VALUES ($1, $2, $3) RETURNING *;`,
-                [data.id_problem, data.phone, data.email]
+                id_theme,
+                id_employee,
+                id_answer,
+                id_specialist,
+                name,
+                describe
+            ) VALUES ($1, $2, $3, $4, $5, $6) RETURNING * ;`,
+            [data.id_theme, data.id_employee, data.id_answer, data.id_specialist, data.name, data.describe]
             );
             return result.rows;
         }catch(err){
@@ -108,12 +139,16 @@ class CallbackTable implements ITable, ICRUD{
     async update(id:number,data:IData){
         try{
             const result = await pool.query(`UPDATE ${this.name} SET 
-                id_problem=$1,
-                phone=$2,
-                email=$3 WHERE id=$4 RETURNING * ;`, 
-                [data.id_problem, data.phone, data.email,id]
+                id_theme=$1,
+                id_employee=$2,
+                id_answer=$3,
+                id_specialist=$4,
+                name=$5,
+                describe=$6
+                WHERE id=$7 RETURNING * ;`,
+                [data.id_theme, data.id_employee, data.id_answer, data.id_specialist, data.name, data.describe, id]
             );
-            return result.rows;   
+            return result.rows;
         }catch(err){
             console.log(err);
             return false;
@@ -133,4 +168,4 @@ class CallbackTable implements ITable, ICRUD{
     }
 }
 
-export default new CallbackTable();
+export default new ProblemsTable();

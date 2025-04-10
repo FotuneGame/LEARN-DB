@@ -17,11 +17,12 @@ export const poolSync = ()=>{
           try{
             await createTables(tabels);
             await addConnectionTables(tabels);
-
+            
+            /*
             await addObjectDB(dbTriggers);
             await addObjectDB(dbFunctions);
             await addObjectDB(dbProcedures);
-            await addObjectDB(dbRepresentation);
+            await addObjectDB(dbRepresentation);*/
           }catch(err){
             console.error(err);
           }

@@ -4,9 +4,11 @@ import {pool} from "../pool";
 
 
 interface IData{
+    id_client: number,
     phone:string,
     date: Date, //преобразует YYYY-MM-DD
-    time: Date //преобразует HH:MM:SS
+    time: Date, //преобразует HH:MM:SS
+    is_spam: boolean
 }
 
 
@@ -25,7 +27,8 @@ class CallTable implements ITable, ICRUD{
                     id SERIAL PRIMARY KEY,
                     phone CHARACTER VARYING(32),
                     date DATE DEFAULT CURRENT_DATE,
-                    time TIME
+                    time TIME,
+                    is_spam BOOLEAN DEFAULT FALSE
                 );
             `);
             return result;
@@ -36,7 +39,25 @@ class CallTable implements ITable, ICRUD{
     }
 
     async addConnetction(){
-        return true;
+        try{
+            const result = await pool.query(`
+                DO $$
+                BEGIN
+                    IF NOT EXISTS (
+                        SELECT 1 
+                        FROM information_schema.columns 
+                        WHERE table_name = '${this.name}' 
+                        AND column_name = 'id_client'
+                    ) THEN
+                        ALTER TABLE ${this.name} ADD COLUMN id_client INT REFERENCES clients;
+                    END IF;
+                END $$;
+            `);
+            return result;
+        }catch(err){
+            console.error(err);
+            return false;
+        }
     }
 
 
@@ -47,9 +68,10 @@ class CallTable implements ITable, ICRUD{
             const result = await pool.query(`INSERT INTO ${this.name} (
                 phone,
                 date,
-                time
-            ) VALUES ($1, $2, $3) RETURNING * ;`,
-                [data.phone, data.date, data.time.toTimeString().split(' ')[0]]
+                time,
+                id_client
+            ) VALUES ($1, $2, $3, $4) RETURNING * ;`,
+                [data.phone, data.date, data.time.toTimeString().split(' ')[0], data.id_client]
             );
             return result.rows;
         }catch(err){
@@ -92,8 +114,10 @@ class CallTable implements ITable, ICRUD{
             const result = await pool.query(`UPDATE ${this.name} SET 
                 phone=$1,
                 date=$2,
-                time=$3 WHERE id=$4 RETURNING * ;`,
-                [data.phone, data.date, data.time.toTimeString().split(' ')[0], id]
+                time=$3,
+                id_client=$4,
+                is_spam=$5 WHERE id=$6 RETURNING * ;`,
+                [data.phone, data.date, data.time.toTimeString().split(' ')[0], data.id_client, data.is_spam, id]
             );
             return result.rows;
         }catch(err){
@@ -101,6 +125,7 @@ class CallTable implements ITable, ICRUD{
             return false;
         }
     }
+
 
     async delete(id:number){
         try{

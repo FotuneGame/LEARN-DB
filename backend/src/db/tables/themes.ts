@@ -103,6 +103,37 @@ class ThemeTable implements ITable, ICRUD{
             return false;
         }
     }
+
+
+    async statics(){
+        try{
+            const result = await pool.query(`
+                SELECT
+                    t.id AS id,
+                    t.name AS name,
+                    COUNT(DISTINCT p.id) AS total_problems_in_theme,
+                    COUNT(DISTINCT lp.id_client) AS unique_clients_count,
+                    COUNT(DISTINCT c.id) AS total_calls_count,
+                    COUNT(DISTINCT CASE WHEN lp.is_solve = TRUE THEN lp.id_client END) AS clients_with_solutions
+                FROM
+                    themes t
+                LEFT JOIN
+                    problems p ON t.id = p.id_theme
+                LEFT JOIN
+                    list_problems_client lp ON p.id = lp.id_problem
+                LEFT JOIN
+                    calls c ON lp.id_client = c.id_client
+                GROUP BY
+                    t.id, t.name
+                ORDER BY
+                    unique_clients_count DESC;
+            `);
+            return result.rows;
+        }catch(err){
+            console.log(err);
+            return false;
+        }
+    }
 }
 
 export default new ThemeTable();
