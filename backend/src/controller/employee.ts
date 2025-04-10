@@ -46,6 +46,24 @@ class Employee{
             return next(HandlerError.internal("employee delete:",(err as Error).message));
         }
     }
+
+    async statistics(req:Request, res:Response,next:NextFunction){
+        try{
+
+        }catch(err){
+            return next(HandlerError.internal("employee statistics:",(err as Error).message));
+        }
+    }
+
+
+    //find_problems_employe
+    async problems(req:Request, res:Response,next:NextFunction){
+        try{
+
+        }catch(err){
+            return next(HandlerError.internal("employee problems:",(err as Error).message));
+        }
+    }
 }
 
 

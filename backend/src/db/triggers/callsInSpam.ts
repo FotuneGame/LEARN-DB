@@ -19,9 +19,8 @@ class callsInSpam implements IObjectDB{
                         -- Проверяем, есть ли номер телефона в таблице spam
                         IF EXISTS (
                             SELECT 1
-                            FROM spam s
-                            JOIN calls c ON s.id_call = c.id
-                            WHERE c.phone = NEW.phone
+                            FROM calls c
+                            WHERE c.phone = NEW.phone AND c.is_spam = TRUE
                         ) THEN
                             RAISE EXCEPTION 'Номер телефона % найден в списке спама.', NEW.phone;
                         END IF;

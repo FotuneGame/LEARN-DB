@@ -28,7 +28,7 @@ class CallTable implements ITable, ICRUD{
                     phone CHARACTER VARYING(32),
                     date DATE DEFAULT CURRENT_DATE,
                     time TIME,
-                    is_spam BOOLEAN DEFAULT FALSE
+                    is_spam BOOLEAN
                 );
             `);
             return result;

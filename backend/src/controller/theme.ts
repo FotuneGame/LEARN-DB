@@ -54,6 +54,14 @@ class Theme{
             return next(HandlerError.internal("theme delete:",(err as Error).message));
         }
     }
+
+    async statistics(req:Request, res:Response,next:NextFunction){
+        try{
+
+        }catch(err){
+            return next(HandlerError.internal("theme statistics:",(err as Error).message));
+        }
+    }
 }
 
 

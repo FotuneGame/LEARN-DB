@@ -10,54 +10,58 @@ class findByTheme implements IObjectDB{
             const res = await pool.query(`
                 CREATE OR REPLACE FUNCTION ${this.name}(id_theme_find INT)
                 RETURNS TABLE (
-                    id_answer INT,
-                    answer_name VARCHAR,
-                    id_employee INT,
-                    employee_name VARCHAR,
-                    id_specialist INT,
-                    specialist_profession VARCHAR
+                    answers JSONB[],
+                    employees JSONB[],
+                    specialists JSONB[]
                 ) AS $$
                 BEGIN
                     RETURN QUERY
-                    -- Ответы по теме
                     SELECT 
-                        a.id AS id_answer, 
-                        a.name AS answer_name, 
-                        NULL::INT AS id_employee, 
-                        NULL::VARCHAR AS employee_name, 
-                        NULL::INT AS id_specialist, 
-                        NULL::VARCHAR AS specialist_profession
-                    FROM answers a
-                    JOIN answers_by_theme at ON a.id = at.id_answer
-                    WHERE at.id_theme = id_theme_find
-    
-                    UNION ALL
-    
-                    -- Сотрудники по теме
-                    SELECT 
-                        NULL::INT AS id_answer, 
-                        NULL::VARCHAR AS answer_name, 
-                        e.id AS id_employee, 
-                        e.first_name AS employee_name, 
-                        NULL::INT AS id_specialist, 
-                        NULL::VARCHAR AS specialist_profession
-                    FROM employees e
-                    JOIN employees_by_theme et ON e.id = et.id_employee
-                    WHERE et.id_theme = id_theme_find
-    
-                    UNION ALL
-    
-                    -- Специалисты по теме
-                    SELECT 
-                        NULL::INT AS id_answer, 
-                        NULL::VARCHAR AS answer_name, 
-                        NULL::INT AS id_employee, 
-                        NULL::VARCHAR AS employee_name, 
-                        s.id AS id_specialist, 
-                        s.profession AS specialist_profession
-                    FROM specialists s
-                    JOIN specialists_by_theme st ON s.id = st.id_specialist
-                    WHERE st.id_theme = id_theme_find;
+                        -- Массив ответов
+                        ARRAY(
+                            SELECT jsonb_build_object(
+                                'id_answer', a.id,
+                                'answer_name', a.name,
+                                'description', a.describe,
+                                'important', a.important
+                            )
+                            FROM answers a
+                            JOIN answers_by_theme at ON a.id = at.id_answer
+                            WHERE at.id_theme = id_theme_find
+                        ) AS answers,
+                        
+                        -- Массив сотрудников
+                        ARRAY(
+                            SELECT jsonb_build_object(
+                                'id_employee', e.id,
+                                'first_name', e.first_name,
+                                'second_name', e.second_name,
+                                'middle_name', e.middle_name,
+                                'phone', e.phone,
+                                'email', e.email,
+                                'post', e.post
+                            )
+                            FROM employees e
+                            JOIN employees_by_theme et ON e.id = et.id_employee
+                            WHERE et.id_theme = id_theme_find
+                        ) AS employees,
+                        
+                        -- Массив специалистов
+                        ARRAY(
+                            SELECT jsonb_build_object(
+                                'id_specialist', s.id,
+                                'first_name', s.first_name,
+                                'second_name', s.second_name,
+                                'middle_name', s.middle_name,
+                                'profession', s.profession,
+                                'phone', s.phone,
+                                'email', s.email,
+                                'adress', s.adress
+                            )
+                            FROM specialists s
+                            JOIN specialists_by_theme st ON s.id = st.id_specialist
+                            WHERE st.id_theme = id_theme_find
+                        ) AS specialists;
                 END;
                 $$ LANGUAGE plpgsql;
                 `

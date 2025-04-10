@@ -13,17 +13,21 @@ class clientCallbacks implements IObjectDB{
             const res = await pool.query(`
                     CREATE OR REPLACE VIEW ${this.name} AS
                     SELECT
-                        cl.id AS id_client,
-                        cl.first_name AS first_name,
-                        cl.second_name AS second_name,
-                        cl.middle_name AS middle_name,
-                        ca.id AS id_callback,
+                        ca.id as id_callback,
                         ca.phone AS phone,
-                        ca.email AS email
+                        ca.email AS email,
+                        cl.id AS id_client,
+                        cl.first_name,
+                        cl.second_name,
+                        cl.middle_name
                     FROM
                         callbacks ca
                     LEFT JOIN
-                        clients cl ON ca.id_client = cl.id;
+                        problems p ON ca.id_problem = p.id
+                    LEFT JOIN
+                        list_problems_client lpc ON p.id = lpc.id_problem
+                    LEFT JOIN
+                        clients cl ON cl.id = lpc.id_client;
                 `);
             return res;
         }catch(err){

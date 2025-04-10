@@ -46,6 +46,14 @@ class Specialist{
             return next(HandlerError.internal("specialist delete:",(err as Error).message));
         }
     }
+
+    async statistics(req:Request, res:Response,next:NextFunction){
+        try{
+
+        }catch(err){
+            return next(HandlerError.internal("specialist statistics:",(err as Error).message));
+        }
+    }
 }
 
 

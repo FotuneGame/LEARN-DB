@@ -10,10 +10,10 @@ class changeEmployee implements IObjectDB{
         try{
             const res = await pool.query(`
                 CREATE OR REPLACE PROCEDURE ${this.name}(
-                    id_client INT, -- ID клиента, которого нужно обновить
-                    employee_first_name VARCHAR, -- Имя сотрудника
-                    employee_second_name VARCHAR, -- Фамилия сотрудника
-                    employee_middle_name VARCHAR -- Отчество сотрудника
+                    id_client INT,
+                    employee_first_name VARCHAR,
+                    employee_second_name VARCHAR,
+                    employee_middle_name VARCHAR
                 ) AS $$
                 DECLARE
                     emp_id INT; -- Переменная для хранения id_employee

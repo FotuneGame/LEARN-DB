@@ -3,7 +3,8 @@ import assert from "assert";
 import clientEmployee from "../../db/representation/clientEmployee";
 import clientCallbacks from "../../db/representation/clientCallbacks";
 
-/*
+
+ //работает после заполненой тестовыми данными таблицой
 describe("DB: Representation:", () => {
 
   it("clientEmployee (all)", async () => {
@@ -35,4 +36,4 @@ describe("DB: Representation:", () => {
     assert.equal(!res, false);
   });
 
- });*/
+ });
