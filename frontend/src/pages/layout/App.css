@@ -1,0 +1,14 @@
+
+body {
+    margin: 0 10rem;
+    padding: 0;
+    display: block;
+}
+
+
+
+@media screen and (max-width: 600px) {
+    body {
+        margin: 0 1rem;
+    }
+}
