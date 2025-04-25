@@ -9,8 +9,8 @@ import { useDispatch } from "react-redux"
 import {actions as actionsCode} from "@/shared/store/slice/code"
 import {actions as actionsAuth} from "@/shared/store/slice/auth"
 
-import type { SubmitLoginType } from "@/feature/login";
-import LoginForm from "@/feature/login";
+import type { SubmitLoginType } from "@/features/login";
+import LoginForm from "@/features/login";
 import UserAPI from "@/shared/api/user";
 
 

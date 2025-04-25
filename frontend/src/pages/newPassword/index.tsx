@@ -14,8 +14,8 @@ import {actions as actionsUser} from "@/shared/store/slice/user"
 
 import UserAPI from "@/shared/api/user"
 
-import type { SubmitNewPasswordType } from "@/feature/newPassword";
-import NewPasswordForm from "@/feature/newPassword";
+import type { SubmitNewPasswordType } from "@/features/newPassword";
+import NewPasswordForm from "@/features/newPassword";
 
 
 

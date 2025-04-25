@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from "react-redux"
 import {actions as actionsCode} from "@/shared/store/slice/code"
 import { useNavigate } from "react-router-dom"
 
-import type { SubmitSystemType } from "@/feature/system"
-import SystemForm from "@/feature/system"
+import type { SubmitSystemType } from "@/features/system"
+import SystemForm from "@/features/system"
 import {paths} from "@/shared/const"
 
 

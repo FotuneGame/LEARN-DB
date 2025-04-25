@@ -9,8 +9,8 @@ import { useDispatch } from "react-redux"
 import {actions as actionsCode} from "@/shared/store/slice/code"
 import {actions as actionsForget} from "@/shared/store/slice/forget"
 
-import type { SubmitForgetType } from "@/feature/forget";
-import ForgetForm from "@/feature/forget";
+import type { SubmitForgetType } from "@/features/forget";
+import ForgetForm from "@/features/forget";
 
 import UserAPI from "@/shared/api/user";
 

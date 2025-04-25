@@ -18,8 +18,8 @@ import {actions as actionsUser} from "@/shared/store/slice/user"
 import UserAPI from "@/shared/api/user"
 import {useTimer} from "@/shared/hooks";
 
-import type { SubmitCodeType } from "@/feature/code";
-import CodeForm from "@/feature/code";
+import type { SubmitCodeType } from "@/features/code";
+import CodeForm from "@/features/code";
 
 
 

@@ -9,8 +9,8 @@ import { useDispatch } from "react-redux"
 import {actions as actionsCode} from "@/shared/store/slice/code"
 import {actions as actionsRegistration} from "@/shared/store/slice/registration"
 
-import type { SubmitRegistrationType } from "@/feature/registration";
-import RegistrationForm from "@/feature/registration"
+import type { SubmitRegistrationType } from "@/features/registration";
+import RegistrationForm from "@/features/registration"
 
 import UserAPI from "@/shared/api/user";
 

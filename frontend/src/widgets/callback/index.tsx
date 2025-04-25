@@ -1,5 +1,5 @@
-import type { CallbackFormType } from "@/feature/callback";
-import CallbackForm from "@/feature/callback";
+import type { CallbackFormType } from "@/features/callback";
+import CallbackForm from "@/features/callback";
 import Screen from "@/shared/ui/screen";
 import CallbackAPI from "@/shared/api/callback";
 import {Card, CardContent} from "@/shared/ui/card"

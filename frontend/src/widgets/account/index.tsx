@@ -1,5 +1,5 @@
-import type { SubmitAccountType } from "@/feature/account"
-import AccountForm from "@/feature/account"
+import type { SubmitAccountType } from "@/features/account"
+import AccountForm from "@/features/account"
 import { useState } from "react"
 
 import UserAPI from "@/shared/api/user"
