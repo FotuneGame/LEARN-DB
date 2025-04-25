@@ -1,13 +1,13 @@
 import { UserType } from "@/types"
-import UserAPI from "@/api/user"
-import type { RootState } from "@/store"
+import UserAPI from "@/shared/api/user"
+import type { RootState } from "@/shared/store"
 import { useDispatch, useSelector } from "react-redux"
-import {actions as actionsCode} from "@/store/slice/code"
+import {actions as actionsCode} from "@/shared/store/slice/code"
 import { useNavigate } from "react-router-dom"
 
-import type { SubmitSystemType } from "@/components/form/system"
-import SystemForm from "@/components/form/system"
-import {paths} from "@/pages"
+import type { SubmitSystemType } from "@/feature/system"
+import SystemForm from "@/feature/system"
+import {paths} from "@/shared/const"
 
 
 function SystemWidget (props: {user: UserType}){

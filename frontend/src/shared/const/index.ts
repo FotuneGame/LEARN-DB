@@ -1,0 +1,16 @@
+export const paths = {
+    newPassword: "/new_password",
+    setting: "/setting",
+    clients: "/clients",
+    company: "/company",
+    about: "/about",
+    admin:  "/admin",
+    auth: "/auth",
+    forget:"/forget",
+    registration:  "/registration",
+    FAQ: "/faq",
+    code:"/code",
+    auth_google: "/google",
+    auth_github: "/github",
+    main:  "/",
+}

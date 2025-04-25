@@ -1,4 +1,4 @@
-import Screen from "@/components/screen"
+import Screen from "@/shared/ui/screen"
 
 
 interface VideoWidgetProps extends React.HTMLAttributes<HTMLElement> {

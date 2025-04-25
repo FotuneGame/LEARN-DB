@@ -1,13 +1,13 @@
 import { useState } from "react"
 import { UserType } from "@/types"
-import UserAPI from "@/api/user"
+import UserAPI from "@/shared/api/user"
 import { useDispatch } from "react-redux"
-import {actions as actionsCode} from "@/store/slice/code"
-import {actions as actionSecurity} from "@/store/slice/security"
-import type { SubmitSecurityType } from "@/components/form/security"
-import SecurityForm from "@/components/form/security"
+import {actions as actionsCode} from "@/shared/store/slice/code"
+import {actions as actionSecurity} from "@/shared/store/slice/security"
+import type { SubmitSecurityType } from "@/feature/security"
+import SecurityForm from "@/feature/security"
 
-import { paths } from "@/pages"
+import {paths} from "@/shared/const"
 import { useNavigate } from "react-router-dom"
 
 

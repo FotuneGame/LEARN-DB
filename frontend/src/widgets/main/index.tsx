@@ -1,5 +1,5 @@
-import Screen from "@/components/screen"
-import { Separator } from "@/components/ui/separator"
+import Screen from "@/shared/ui/screen"
+import { Separator } from "@/shared/ui/separator"
 
 
 

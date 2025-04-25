@@ -1,8 +1,8 @@
-import type { CallbackFormType } from "@/components/form/callback";
-import CallbackForm from "@/components/form/callback";
-import Screen from "@/components/screen";
-import CallbackAPI from "@/api/callback";
-import {Card, CardContent} from "@/components/ui/card"
+import type { CallbackFormType } from "@/feature/callback";
+import CallbackForm from "@/feature/callback";
+import Screen from "@/shared/ui/screen";
+import CallbackAPI from "@/shared/api/callback";
+import {Card, CardContent} from "@/shared/ui/card"
 
 
 

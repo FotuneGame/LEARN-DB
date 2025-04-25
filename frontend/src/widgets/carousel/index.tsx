@@ -1,6 +1,6 @@
-import Screen from "@/components/screen"
-import { Separator } from "@/components/ui/separator"
-import { Carousel,CarouselContent, CarouselItem, CarouselPrevious,CarouselNext } from "@/components/ui/carousel"
+import Screen from "@/shared/ui/screen"
+import { Separator } from "@/shared/ui/separator"
+import { Carousel,CarouselContent, CarouselItem, CarouselPrevious,CarouselNext } from "@/shared/ui/carousel"
 
 
 

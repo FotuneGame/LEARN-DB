@@ -1,10 +1,10 @@
-import type { SubmitAccountType } from "@/components/form/account"
-import AccountForm from "@/components/form/account"
+import type { SubmitAccountType } from "@/feature/account"
+import AccountForm from "@/feature/account"
 import { useState } from "react"
 
-import UserAPI from "@/api/user"
+import UserAPI from "@/shared/api/user"
 import { useDispatch } from "react-redux"
-import {actions as actionsUser} from "@/store/slice/user"
+import {actions as actionsUser} from "@/shared/store/slice/user"
 import { UserType } from "@/types"
 
 
