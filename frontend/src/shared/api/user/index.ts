@@ -79,8 +79,8 @@ export default class UserAPI{
         };
     }
 
-    static async newData(user: UserType, file_ava: File | null){
-        console.log("newData: ",user, file_ava);
+    static async newData(user: UserType, file: File | null){
+        console.log("newData: ",user, file);
         return user;
     }
 

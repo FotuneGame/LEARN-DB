@@ -13,7 +13,7 @@ import { UserType } from "@/types"
 
 
 export type SubmitAccountType = z.infer<typeof formSchema>;
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 5MB
 const ACCEPTED_FILE_TYPES = ["image/jpeg", "image/png", "application/pdf"];
 const formSchema = z.object({
     first_name: z.string().min(1, {
@@ -28,7 +28,7 @@ const formSchema = z.object({
     file: z.union([
         z.instanceof(File)
             .refine(file => file && file.size <= MAX_FILE_SIZE, {
-            message: "Максимальный размер файла - 5MB",
+            message: "Максимальный размер файла - 10MB",
             })
             .refine(file => file && ACCEPTED_FILE_TYPES.includes(file.type), {
             message: "Поддерживаются только .jpg, .png и .pdf файлы",
