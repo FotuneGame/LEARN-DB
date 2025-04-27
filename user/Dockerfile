@@ -18,7 +18,7 @@ COPY . .
 #Настройка для вмонтирования ссылки на папку из тома
 #VOLUME [ "/volume-name:/data" ]
 
-EXPOSE 6001
+EXPOSE 6002
 
 # Пермеменные окружения
 ARG NODE_ENV=production 

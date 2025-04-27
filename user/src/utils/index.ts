@@ -1,9 +1,9 @@
 import { genHash, genJWT, verJWT, eHash } from "./jwt";
-import { upload } from "./loadFile";
+import {generateRandomString} from"./codeGen";
 
 export const generateHash = genHash;
 export const generateJWT = genJWT;
 export const verifyJWT = verJWT;
 export const equalsHash = eHash;
 
-export const loadAvatar = upload;
+export const codeGen = generateRandomString;

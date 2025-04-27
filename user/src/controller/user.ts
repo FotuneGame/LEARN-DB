@@ -1,6 +1,8 @@
 import {Request, Response, NextFunction} from "express";
-import {generateJWT, generateHash, equalsHash, loadAvatar} from "../utils";
+import {generateJWT, generateHash, equalsHash} from "../utils";
 import validator from "validator";
+import path from "path";
+import fs from "fs";
 
 import { User } from "../models/User";
 import { MetaUser } from "../models/MetaUser";
@@ -33,7 +35,8 @@ class UserController{
 
 
     async login(req:Request, res:Response, next:NextFunction){
-        const {password, email, adress, date, codeType} = req.body;
+        const {password, email, date, codeType} = req.body;
+        const adress = req.header('x-forwarded-for') || req.connection.remoteAddress;
         const {user} = req.body;
         let {metaUser} = req.body;
         
@@ -77,7 +80,8 @@ class UserController{
 
 
     async registration(req:Request, res:Response, next:NextFunction){
-        const {password, email, first_name, second_name, middle_name, adress, date, codeType} = req.body;
+        const {password, email, first_name, second_name, middle_name, date, codeType} = req.body;
+        const adress = req.header('x-forwarded-for') || req.connection.remoteAddress;
         let {user} = req.body;
 
         
@@ -148,10 +152,10 @@ class UserController{
 
 
     async setPassword(req:Request, res:Response, next:NextFunction){
-        const {password, tokens, codeType} = req.body;
-        const {user, metaUser, setting} = req.body;
+        const {password, codeType} = req.body;
+        const {user, metaUser} = req.body;
 
-        if(!password || !tokens)
+        if(!password)
             return next(HandlerError.badRequest("[User setPassword]","Bad args!"));
         if(!user)
             return next(HandlerError.badRequest("[User setPassword]","Have not this user!"));
@@ -164,10 +168,17 @@ class UserController{
             const passwordHash = await generateHash(password);
             const updateUser = await User.update({password:passwordHash},{where:{id:user.id}, transaction: trans});
             const newUser = await User.findOne({where:{id:user.id}});
+            if(!newUser)
+                return next(HandlerError.badRequest("[User setPassword]","BD not create updateUser!"));
             await trans.commit();
-            if(newUser)
-                newUser.password="";
-            res.json({access: tokens.access,user:newUser,metaUser:metaUser,setting:setting});
+
+            newUser.password="";
+            const name = `${newUser.second_name} ${newUser.first_name} ${newUser.middle_name}`;
+            const access = generateJWT({id:newUser.id,name:name,password:newUser.password, email:newUser.email}, false);
+            const refresh = generateJWT({id:newUser.id,name:name,password:newUser.password, email:newUser.email}, true);
+
+            res.cookie("refresh",refresh,{httpOnly: false, secure: false, signed: false});
+            res.json({access: access,user:newUser,metaUser:metaUser});
         }catch(err){
             await trans.rollback();
             return next(HandlerError.internal("[User setPassword]", (err as Error).message));
@@ -202,7 +213,6 @@ class UserController{
             return next(HandlerError.badRequest("[User message]","Bad args!"));
         if(!(validator.isEmail(email)) )
             return next(HandlerError.badRequest("[User message]","Bad args, not validating!"));
-        
         try{
             await sendEmail(code, email, codeType);
             res.json({send:true});
@@ -216,11 +226,13 @@ class UserController{
         const {email, phone, password, codeType} = req.body;
         const {user, metaUser} = req.body;
 
-        if(!email || !password || !codeType)
+        if(!email || !password || !phone)
             return next(HandlerError.badRequest("[User setSecurity]","Bad args!"));
         if(!user)
             return next(HandlerError.badRequest("[User setSecurity]","Have not this user!"));
-        if(!validator.isEmail(email) || !(validator.isMobilePhone(phone) || !phone) || !password)
+
+        //Валидация телефона validator.isMobilePhone(phone) не работает
+        if(!validator.isEmail(email) || !password)
             return next(HandlerError.badRequest("[User setSecurity]","Bad args, not validating!"));
         if(!codeType && (codeType as CodeType)==="security")
             return next(HandlerError.badRequest("[User setSecurity]","This is not 'security' confirm type!"));
@@ -228,12 +240,12 @@ class UserController{
         const trans = await sequelize.transaction();
 
         try{
-            const updateUser = await User.update({email:email, phone:phone, password:password},{where:{id:user.id}, transaction: trans});
+            const passwordHash = await generateHash(password);
+            const updateUser = await User.update({email:email, phone:phone, password:passwordHash},{where:{id:user.id}, transaction: trans, returning: true});
+            await trans.commit();
             const newUser = await User.findOne({where:{id:user.id}});
             if(!newUser)
                 return next(HandlerError.badRequest("[User setSecurity]","Have not updated user!"));
-
-            await trans.commit();
         
             const name = `${newUser.second_name} ${newUser.first_name} ${newUser.middle_name}`;
             const access = generateJWT({id:newUser.id,name:name,password:newUser.password, email:newUser.email}, false);
@@ -251,37 +263,50 @@ class UserController{
 
 
     async setData(req:Request, res:Response, next:NextFunction){
-        const {first_name, second_name, middle_name} = req.body;
-        const ava_name = req.file?.filename;
-        const {user, metaUser} = req.body;
+        const { first_name, second_name, middle_name } = req.body;
+        const {avatar} = req.body;
+        const { user, metaUser } = req.body;
 
-        if(!first_name && !second_name && !middle_name && !ava_name)
-            return next(HandlerError.badRequest("[User setData]","Bad args, nothing args was take!"));
-        if(!user)
-            return next(HandlerError.badRequest("[User setData]","Have not this user!"));
-
+        if (!user) 
+            return next(HandlerError.badRequest("[User setData]", "User not provided!"));
+    
         const trans = await sequelize.transaction();
-
-        try{
-            if(ava_name){
-                loadAvatar(req,res, async (err:Error) => {
-                    if (err) 
-                        return res.status(400).json({ error: err.message });
-                    if(req.file)
-                        await User.update({avatar:`/static/${req.file.filename}`},{where:{id:user.id}, transaction: trans});
-                })
-            }
-            
-            await User.update({
+    
+        try {
+            const updateData = {
                 first_name: first_name ?? user.first_name,
                 second_name: second_name ?? user.second_name,
-                middle_name: middle_name ?? user.middle_name,
-            },{where:{id:user.id}, transaction: trans});
+                middle_name: middle_name ?? user.middle_name
+            };
+    
+            await User.update(updateData, {
+                where: { id: user.id },
+                transaction: trans
+            });
+
+            if(avatar){
+                await User.update(
+                    { avatar: `/files/${avatar.filename}` },
+                    { 
+                        where: { id: user.id },
+                        transaction: trans 
+                    }
+                );
+                // Удаляем старый аватар (если был)
+                const oldUser = await User.findOne({where:{id:user.id}});
+                if (oldUser && oldUser.avatar && fs.existsSync(oldUser.avatar)) {
+                    fs.unlink(path.resolve(__dirname,'..','..','public',oldUser.avatar), (err) => {
+                        if (err) 
+                            return next(HandlerError.badRequest("[User setData delete old avatar]","Dont delete old avatar!"));
+                    });
+                }
+            }
+    
+            await trans.commit();
+
             const newUser = await User.findOne({where:{id:user.id}});
             if(!newUser)
                 return next(HandlerError.badRequest("[User setData]","Have not updated user!"));
-
-            await trans.commit();
 
             const name = `${newUser.second_name} ${newUser.first_name} ${newUser.middle_name}`;
             const access = generateJWT({id:newUser.id,name:name,password:newUser.password, email:newUser.email}, false);

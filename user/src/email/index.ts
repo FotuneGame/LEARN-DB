@@ -1,7 +1,8 @@
 import nodemailer from "nodemailer";
 import HandlerError from "../error";
-import { mailBody } from "./data";
+import { getMail } from "./data";
 import { CodeType } from "@/utils/types";
+import {logger} from "../logs";
 
 
 
@@ -18,17 +19,25 @@ const transporter=nodemailer.createTransport({
 
 
 export async function sendEmail(code: number, email: string, type: CodeType){
+
+    const mail = getMail(code,type);
+
     const mailOptions = {
         from: process.env.MAIL_FROM,
         to: email,
-        headers: (mailBody.headers + type) as any,
-        subject: mailBody.subject,
-        text: (mailBody.text + type),
-        html: mailBody.html(code)
+        headers: mail.headers,
+        subject: mail.subject,
+        text: mail.text,
+        html: mail.html
     }
 
     try{
-        await transporter.sendMail(mailOptions);
+        await transporter.sendMail(mailOptions, (err)=>{
+            if(err)
+                logger.error("[sendEmail] error:", err);
+            else
+                logger.log("[sendEmail] log: send mail to ", email);
+        });
     }catch(err){
         return HandlerError.internal("[Mail send]",(err as Error).message);
     }

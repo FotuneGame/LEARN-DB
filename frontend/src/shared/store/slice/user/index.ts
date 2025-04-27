@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { UserType } from '@/types'
+import {urlUserAvatars} from "@/shared/api/user";
 
 
 const loadLoacalStorage = () =>{
@@ -25,6 +26,8 @@ export const UserSlice = createSlice({
   reducers: {
     setUser: (state, action: PayloadAction<UserType>) =>{
       Object.assign(state, action.payload);
+      if(state.avatar)
+        state.avatar = urlUserAvatars+state.avatar;
       localStorage.setItem("user",JSON.stringify(state));
     },
     setAccessToken: (state, action: PayloadAction<string>) => {

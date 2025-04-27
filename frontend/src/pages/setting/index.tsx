@@ -27,7 +27,7 @@ function MenuSetting(props: {idScreen:number, user: UserType}){
             );
         case 2:
             return(
-                <SystemWidget user={props.user}/>
+                <SystemWidget/>
             );
         default:
             return null;

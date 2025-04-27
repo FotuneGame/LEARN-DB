@@ -102,7 +102,7 @@ function AccountForm (props: {
                                 <FormField
                                     control={form.control}
                                     name="file"
-                                    render={({ field }) => (
+                                    render={() => (
                                         <FormItem>
                                             <FormLabel>Аватарка</FormLabel>
                                             <FormControl>

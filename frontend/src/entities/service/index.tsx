@@ -1,4 +1,4 @@
-import {Card, CardContent, CardHeader, CardDescription, CardFooter} from "@/shared/ui/card"
+import {Card, CardHeader, CardDescription, CardFooter} from "@/shared/ui/card"
 import { Link } from "react-router-dom";
 import { Button } from "@/shared/ui/button";
 

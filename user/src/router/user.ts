@@ -35,13 +35,11 @@ userRouter.post("/code", ware.generationCodeWare, controller.UserController.mess
 
 userRouter.post("/login",ware.confirmWare, ware.findUserWare, ware.findMetaUserWare, controller.UserController.login);
 userRouter.post("/registration", ware.confirmWare, ware.findUserWare, controller.UserController.registration);
+userRouter.patch("/new/password", ware.confirmWare, ware.findUserWare, ware.findMetaUserWare, controller.UserController.setPassword);
+userRouter.patch("/new/security", ware.confirmWare, ware.findUserWare, ware.findMetaUserWare, controller.UserController.setSecurity);
 
 userRouter.delete("/delete",ware.tokensWare, ware.confirmWare, ware.findUserWare, ware.findMetaUserWare, controller.UserController.delete);
-userRouter.patch("/new/password", ware.tokensWare, ware.confirmWare, ware.findUserWare, ware.findMetaUserWare, controller.UserController.setPassword);
-
-
-userRouter.patch("/new/security", ware.tokensWare, ware.confirmWare, ware.findUserWare, ware.findMetaUserWare, controller.UserController.setSecurity);
-userRouter.patch("/new/data", ware.tokensWare, ware.findUserWare, ware.findMetaUserWare, controller.UserController.setData);
+userRouter.patch("/new/data",ware.avatarWare, ware.tokensWare, ware.findUserWare, ware.findMetaUserWare, controller.UserController.setData);
 
 
 export default userRouter;

@@ -22,7 +22,7 @@ describe("Redis tests", ()=>{
     }).timeout(15000);
     it("clearDBCashe", async () =>{
         console.log("[Redis]: ",`redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}/${process.env.REDIS_DB}`);
-        const result = await CustomRedis.clearDBCashe();
+        const result = await CustomRedis.clearDBCache();
         assert.equal(result, "OK");
     }).timeout(15000);
 });

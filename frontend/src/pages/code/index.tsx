@@ -51,7 +51,7 @@ function Code(){
     async function onSubmit(values: SubmitCodeType) {
         setLoad(true);
         try{
-            const confirm = await UserAPI.confirm(values.code);
+            const confirm = await UserAPI.confirm(email, values.code);
             if(!confirm) return false;
             let new_user;
             switch (code.type){
@@ -85,7 +85,7 @@ function Code(){
                     break;
                 case "delete_account":
                     new_user = await UserAPI.delete(user);
-                    if(new_user) return false;
+                    if(!new_user) return false;
                     dispatch(actionsUser.setDefault());
                     dispatch(actionsCode.setDefault());
                     navigate(paths.main);

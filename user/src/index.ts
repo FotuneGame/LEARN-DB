@@ -1,6 +1,5 @@
 import "dotenv/config";
 import express, { Express } from "express";
-import fileUpload from "express-fileupload";
 import cookieParser from 'cookie-parser';
 import session from "express-session";
 import {ware} from "./middleware/";
@@ -11,45 +10,59 @@ import CustomRedis from "./redis";
 import {logger} from "./logs";
 import router from "./router";
 import sequelize from "./db";
+import multer from 'multer';
 import path from "path";
 import cors from "cors";
 
 
 
-const PORT = process.env.PORT || 3001
-const ULR_CORS = process.env.URL_CORS || ["http://localhost:3000"]
+const PORT = process.env.PORT || 3002
+const ULR_CORS = process.env.URL_CORS?.split(" ") || ["http://localhost"]
 
 
 
-const app:Express = express();
+const app: Express = express();
 
+// 1. Парсеры должны быть ПЕРВЫМИ
+app.use(express.json()); // Для application/json
+
+// 2. Затем остальные middleware
 app.use(cors({
-    origin: function (origin,callback){
-        if(!origin || origin && ULR_CORS.includes(origin))
-            callback(null,true);
-        else
-            callback(HandlerError.badRequest("CORS","Not allowed by CORS"));
+    origin: function (origin, callback) {
+        if (!origin || ULR_CORS.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(HandlerError.badRequest("CORS", "Not allowed by CORS"));
+        }
     },
-    allowedHeaders:['Authorization','Content-Type']
+    methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
+    allowedHeaders: ['Authorization', 'Content-Type'],
+    credentials: true
 }));
-
 
 app.use(cookieParser());
 app.use(session({
     secret: process.env.SECRET_KEY || "SALT",
-    resave: true,
-    rolling: true,
+    resave: false,
     saveUninitialized: false,
+    rolling: true,
     cookie: {
-      httpOnly: false,
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        maxAge: Number(process.env.MAX_COOCKIE_LIFE) || 60 * 24 * 60 * 60 * 1000
     }
 }));
-app.use(express.json())
-app.use("/static",express.static(path.join(__dirname,'..', 'public')));
-app.use(fileUpload({createParentPath: true}));
+
+// 3. Статические файлы
+app.use("/static", express.static(path.join(__dirname, '..', 'public')));
+
+// 4. Passport и роутеры
 app.use(passport.initialize());
 app.use(passport.session());
-app.use("/",router);
+app.use("/", router);
+
+// 5. Обработчик ошибок - последним
 app.use(ware.errorWare);
 
 

@@ -11,7 +11,7 @@ const formSchema = z.object({});
 
 
 
-function SystemForm(props:{onSubmit: (values:SubmitSystemType)=>void}){
+function SystemForm(props:{onSubmit: ()=>Promise<void>}){
 
     const form = useForm<SubmitSystemType>({
         resolver: zodResolver(formSchema),

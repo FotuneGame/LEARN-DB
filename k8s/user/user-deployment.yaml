@@ -1,0 +1,105 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-user
+spec:
+  progressDeadlineSeconds: 240
+  selector:
+    matchLabels:
+      app: user-pod
+      tier: backend-user
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: user-pod
+        tier: backend-user
+        track: stable
+    spec:
+      volumes:
+        - name: user-volume
+          persistentVolumeClaim:
+            claimName: user-persistent-volume-claim
+
+      containers:
+        - name: user-container
+          image: grigorytitov/docker-call-center-user-image:v1
+          imagePullPolicy: Always #Для подгрузки обновлений с DockerHub
+          #command: ["npm","test"] #Для запуска тестов
+          ports:
+            - name: http
+              containerPort: 6002
+          env:
+            - name: URL_BASE_INGRESS
+              value: "https://localhost/api/v1/user"
+            #External services
+            - name: MAIL_SERVICE
+              value: "yandex"
+            - name: MAIL_USER
+              value: "g.t1tov"
+            - name: MAIL_FROM
+              value: "g.t1tov@yandex.ru"
+            - name: MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mailpassword
+                  key: MAILPASSWORD
+
+            - name: GITHUB_CLIENT_ID
+              value: "Ov23liw7nB4C4Jkv4Av8"
+            - name: GITHUB_URL_CALLBACK
+              value: "/github/redirect"
+            - name: GITHUB_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: githubpassword
+                  key: GITHUBPASSWORD
+
+            - name: GOOGLE_CLIENT_ID
+              value: "893274613037-kd8ijfgal0r91ohohiavn324grefu6v1.apps.googleusercontent.com"
+            - name: GOOGLE_URL_CALLBACK
+              value: "/google/redirect"
+            - name: GOOGLE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: googlepassword
+                  key: GOOGLEPASSWORD
+
+            #Internal services
+            - name: DB_USER
+              value: postgres
+            - name: DB_HOST
+              value: postgres
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              value: "db_users"
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pgpassword
+                  key: PGPASSWORD
+
+            - name: KAFKA_CLIENT_ID
+              value: "user-app"
+            - name: KAFKA_BROCKERS_HOST
+              value: kafka
+            - name: KAFKA_BROCKERS_PORT
+              value: "29092"
+            - name: KAFKA_BROCKERS_REPLICATION_FACTOR
+              value: "2"
+
+            - name: REDIS_NAME
+              value: ""
+            - name: REDIS_PASSWORD
+              value: ""
+            - name: REDIS_HOST
+              value: redis
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REDIS_DB
+              value: "1"
+          volumeMounts:
+            - mountPath: /public
+              name: user-volume

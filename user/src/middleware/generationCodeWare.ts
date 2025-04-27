@@ -1,6 +1,7 @@
 import {Request, Response, NextFunction} from "express";
 import {CodeType} from "../utils/types";
 import HandlerError from "../error";
+import { codeGen } from "../utils";
 import redis from "../redis";
 
 
@@ -11,9 +12,9 @@ export default async function generationCodeWare(req:Request, res:Response, next
         return next(HandlerError.badRequest("[generationCodeWare]", "Bad args!"));
     try{
         const data = email;
-        const code = Math.floor(100000+Math.random()*900000);
+        const code = codeGen(6);
         req.body.code = code;
-        await redis.set(data, "code", code.toString());
+        await redis.set(data, "code", code);
         await redis.set(data, "time", new Date().getTime().toString());
         await redis.set(data, "confirm", "0");
         await redis.set(data, "type", (type as CodeType).toString());

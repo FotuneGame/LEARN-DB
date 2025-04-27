@@ -36,6 +36,8 @@ function AccountWidget(props: {user: UserType}){
                 second_name: values.second_name,
                 middle_name: values.middle_name,
             },values.file);
+            if(!res)
+                return;
           dispatch(actionsUser.setUser(res));
         }catch(err){
             console.error(err);

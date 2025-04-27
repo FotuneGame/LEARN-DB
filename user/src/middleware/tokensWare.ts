@@ -33,7 +33,6 @@ export default async function tokensWare(req:Request, res:Response, next:NextFun
                 name: decoded.name,
                 password: decoded.password,
                 email: decoded.email,
-                phone: decoded.phone
             }
             const new_access = generateJWT(data,false);
             req.body.tokens = {
@@ -44,7 +43,6 @@ export default async function tokensWare(req:Request, res:Response, next:NextFun
         }
         
         req.body.email = req.body.tokens.body.email;
-        req.body.phone = req.body.tokens.body.phone;
     
         return next();
     }catch(err){
