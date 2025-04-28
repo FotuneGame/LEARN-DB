@@ -13,19 +13,26 @@ import type { SubmitLoginType } from "@/features/login";
 import LoginForm from "@/features/login";
 import UserAPI from "@/shared/api/user";
 
+import Log from "@/entities/log";
+import { useState } from "react";
 
 
 function Auth(){
     
+    const [log,setLog] = useState<boolean>(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
 
     async function onSubmit(values: SubmitLoginType) {
         const res = await UserAPI.code(values.email, "auth");
-        if(!res) return;
+        if(!res) {
+            setLog(true);
+            return;
+        }
         dispatch(actionsCode.setType("auth"));
         dispatch(actionsAuth.setData(values));
+        setLog(false);
         navigate(paths.code);
     }
 
@@ -37,8 +44,11 @@ function Auth(){
                     <h1 className="text-2xl">Вход в систему</h1>
                     <Separator />
                 </div>
-                <LoginForm onSubmit={onSubmit}/>
+                <LoginForm authGithub={UserAPI.loginGitHub} authGoogle={UserAPI.loginGoogle} onSubmit={onSubmit}/>
             </Screen>
+            {log &&
+                <Log name="Ошибка входа" message="Возможно вам стоит перезагрузить страницу или зайти позже" type="error" callback={()=>setLog(false)}/>
+            }
         </div>
     )
 }

@@ -76,4 +76,8 @@ kubectl exec -it <pod_name> -- /bin/bash
 #### Важное
 1) При развертке для кажого микросервиса настроить свою бд
 2) Если pg-job-create-db : Error, то базы данных созданы
+3) Для настройки OAUTH передите и создате приложения в:
+    1) Yandex: https://id.yandex.ru/security/app-passwords
+    2) Google: https://console.cloud.google.com/
+    3) Github: https://github.com/settings/developers
 

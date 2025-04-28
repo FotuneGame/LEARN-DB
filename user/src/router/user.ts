@@ -8,21 +8,20 @@ import passport from "../passport";
 const userRouter:Router = express.Router();
 
 
-userRouter.get("/google", passport.authenticate("google", {scope:["profile"]}));
+userRouter.get("/google", passport.authenticate("google", {
+    scope: ['profile', 'email'],
+    prompt: 'select_account'
+}));
 userRouter.get(process.env.GOOGLE_URL_CALLBACK as string, passport.authenticate("google", {
-    successRedirect: process.env.URL_BASE_INGRESS + "/google/auth",
-    failureRedirect: process.env.URL_BASE_INGRESS + "/google/fail"
-}))
-userRouter.get("/google/auth", controller.GoogleController.sign);
-userRouter.get("/google/fail", controller.GoogleController.fail);
+    failureRedirect: process.env.URL_SITE,
+    session: true
+}), controller.GoogleController.sign)
 
-userRouter.get("/github", passport.authenticate("github", {scope:["profile"]}));
+userRouter.get("/github", passport.authenticate("github", {scope: ['user:email']}));
 userRouter.get(process.env.GITHUB_URL_CALLBACK as string, passport.authenticate("github", {
-    successRedirect: process.env.URL_BASE_INGRESS + "/github/auth",
-    failureRedirect: process.env.URL_BASE_INGRESS + "/github/fail"
-}))
-userRouter.get("/github/auth", controller.GitHubController.sign);
-userRouter.get("/github/fail", controller.GitHubController.fail);
+    failureRedirect: process.env.URL_SITE,
+    session: true
+}), controller.GitHubController.sign)
 
 
 

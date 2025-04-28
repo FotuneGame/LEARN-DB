@@ -34,7 +34,7 @@ const formSchema = z.object({
 
 
 
-function RegistrationForm (props: {onSubmit: (values:SubmitRegistrationType)=>void}){
+function RegistrationForm (props: {onSubmit: (values:SubmitRegistrationType)=>Promise<void>}){
 
     const [viewPassword,setViewPassword] = useState<boolean>(false);
     const form = useForm<SubmitRegistrationType>({

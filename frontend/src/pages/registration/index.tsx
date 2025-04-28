@@ -14,10 +14,15 @@ import RegistrationForm from "@/features/registration"
 
 import UserAPI from "@/shared/api/user";
 
+import Log from "@/entities/log";
+import { useState } from "react";
+
+
 
 
 function Registration(){
 
+    const [log,setLog] = useState<boolean>(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -25,9 +30,13 @@ function Registration(){
 
     async function onSubmit(values: SubmitRegistrationType) {
         const res = await UserAPI.code(values.email, "registration");
-        if(!res) return;
+        if(!res) {
+            setLog(true);
+            return;
+        }
         dispatch(actionsCode.setType("registration"));
         dispatch(actionsRegistration.setData(values));
+        setLog(false);
         navigate(paths.code);
     }
 
@@ -41,6 +50,9 @@ function Registration(){
                 </div>
                 <RegistrationForm onSubmit={onSubmit}/>
             </Screen>
+            {log &&
+                <Log name="Ошибка регистрации" message="Возможно вам стоит попробовать снова или зайти позже" type="error" callback={()=>setLog(false)}/>
+            }
         </div>
     )
 }

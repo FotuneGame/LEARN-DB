@@ -19,10 +19,10 @@ const formSchema = z.object({
 
 
 function CodeForm (props: {
-    onSubmit: (values:SubmitCodeType)=>void,
+    onSubmit: (values:SubmitCodeType)=> Promise<void>,
     load: boolean,
     time: number,
-    resendCode: (e:React.MouseEvent)=>void
+    resendCode: (e:React.MouseEvent)=> Promise<void>
 }){
     const form = useForm<SubmitCodeType>({
             resolver: zodResolver(formSchema),

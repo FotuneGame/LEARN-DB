@@ -36,7 +36,7 @@ class UserController{
 
     async login(req:Request, res:Response, next:NextFunction){
         const {password, email, date, codeType} = req.body;
-        const adress = req.header('x-forwarded-for') || req.connection.remoteAddress;
+        const adress = req.header('x-forwarded-for') || req.ip;
         const {user} = req.body;
         let {metaUser} = req.body;
         
@@ -81,7 +81,7 @@ class UserController{
 
     async registration(req:Request, res:Response, next:NextFunction){
         const {password, email, first_name, second_name, middle_name, date, codeType} = req.body;
-        const adress = req.header('x-forwarded-for') || req.connection.remoteAddress;
+        const adress = req.header('x-forwarded-for') || req.ip;
         let {user} = req.body;
 
         

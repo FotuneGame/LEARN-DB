@@ -10,7 +10,6 @@ export const paths = {
     registration:  "/registration",
     FAQ: "/faq",
     code:"/code",
-    auth_google: "/google",
-    auth_github: "/github",
+    oauth: "/oauth",
     main:  "/",
 }

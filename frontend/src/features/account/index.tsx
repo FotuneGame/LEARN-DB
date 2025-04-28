@@ -41,7 +41,7 @@ const formSchema = z.object({
 
 
 function AccountForm (props: {
-    onSubmit: (values:SubmitAccountType)=>void,
+    onSubmit: (values:SubmitAccountType)=>Promise<void>,
     user:UserType,
     load: boolean,
     defaultValues: SubmitAccountType

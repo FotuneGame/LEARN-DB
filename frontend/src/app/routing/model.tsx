@@ -6,6 +6,7 @@ import Layout from "@/pages/layout";
 const Auth = React.lazy(() => import("@/pages/auth"));
 const Main = React.lazy(() => import("@/pages/main"));
 const Code = React.lazy(() => import("@/pages/code"));
+const Oauth = React.lazy(() => import("@/pages/oauth"));
 const About = React.lazy(() => import("@/pages/about"));
 const Admin = React.lazy(() => import("@/pages/admin"));
 const Forget = React.lazy(() => import("@/pages/forget/forget"));
@@ -63,6 +64,11 @@ const routes: RouteObject[] = [
             {
                 path: paths.setting,
                 element: <Settings />,
+                errorElement: <NotFound />
+            },
+            {
+                path: paths.oauth,
+                element: <Oauth />,
                 errorElement: <NotFound />
             }
         ]

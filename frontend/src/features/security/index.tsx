@@ -32,7 +32,7 @@ const formSchema = z.object({
 
 
 function SecurityForm (props: {
-        onSubmit: (values:SubmitSecurityType)=>void,
+        onSubmit: (values:SubmitSecurityType)=>Promise<void>,
         defaultValues: SubmitSecurityType
 }){
 

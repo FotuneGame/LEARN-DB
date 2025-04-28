@@ -10,6 +10,8 @@ import SecurityForm from "@/features/security"
 import {paths} from "@/shared/const"
 import { useNavigate } from "react-router-dom"
 
+import Log from "@/entities/log";
+
 
 
 function SecurityWidget (props: {user: UserType}){
@@ -21,6 +23,7 @@ function SecurityWidget (props: {user: UserType}){
         password: "",
         passwordReapet: "",
     });
+    const [log,setLog] = useState<boolean>(false);
     
 
     async function onSubmit(values: SubmitSecurityType ){
@@ -32,13 +35,17 @@ function SecurityWidget (props: {user: UserType}){
         })
         try{
             const res = await UserAPI.code(values.email, "security");
-            if(!res) return;
+            if(!res){
+                setLog(true);
+                return;
+            }
             dispatch(actionsCode.setType("security"));
             dispatch(actionSecurity.setData({
                 email: values.email,
                 phone: values.phone,
                 password: values.password
             }))
+            setLog(false);
             navigate(paths.code);
         }catch(err){
             console.error(err);
@@ -46,7 +53,12 @@ function SecurityWidget (props: {user: UserType}){
     }
 
     return(
-        <SecurityForm onSubmit={onSubmit} defaultValues={defaultValues}/>
+        <>
+            <SecurityForm onSubmit={onSubmit} defaultValues={defaultValues}/>
+            {log &&
+                <Log name="Ошибка изменения конфиденциальных данных аккаунта" message="Возможно вам следует повторить это позже..." type="error" callback={()=>setLog(false)}/>
+            }
+        </>
     )
 }
 

@@ -27,7 +27,11 @@ const formSchema = z.object({
 
 
 
-function LoginForm (props: {onSubmit: (values:SubmitLoginType)=>void}){
+function LoginForm (props: {
+    onSubmit: (values:SubmitLoginType)=> Promise<void>,
+    authGithub: ()=> Promise<void>,
+    authGoogle: ()=> Promise<void>
+}){
 
     const [viewPassword,setViewPassword] = useState<boolean>(false);
     const form = useForm<SubmitLoginType>({
@@ -37,6 +41,16 @@ function LoginForm (props: {onSubmit: (values:SubmitLoginType)=>void}){
             password: ""
         },
     })
+
+    async function google(e:React.MouseEvent) {
+        e.preventDefault(); 
+        props.authGoogle();
+    }
+
+    async function git(e:React.MouseEvent) {
+        e.preventDefault(); 
+        props.authGithub();
+    }
         
     function togglePassword(e:React.MouseEvent){
         e.preventDefault(); 
@@ -80,17 +94,13 @@ function LoginForm (props: {onSubmit: (values:SubmitLoginType)=>void}){
                 <div className="flex flex-col items-center md:flex-row md:justify-between gap-4">
                     <div className="flex flex-col md:flex-row gap-2 w-full">
                         <Button className="w-full md:w-auto" type="submit">Войти</Button>
-                        <div className="flex gap-2">
-                            <Link to={paths.auth_google} className="w-[50%]">
-                                <Button className="w-full">
-                                    <img src={GoogleSVG} width={24} height={24} alt="google"/>
-                                </Button>
-                            </Link>
-                            <Link to={paths.auth_github} className="w-[50%]">
-                                <Button className="w-full">
-                                    <img src={GitHubSVG} alt="github"/>
-                                </Button>
-                            </Link>
+                        <div className="flex gap-2 justify-between">
+                            <Button onClick={google} className="w-[49%]">
+                                <img src={GoogleSVG} width={24} height={24} alt="google"/>
+                            </Button>
+                            <Button onClick={git} className="w-[49%]">
+                                <img src={GitHubSVG} width={24} height={24}  alt="github"/>
+                            </Button>
                         </div>
                     </div>
                     <div className="flex gap-2">

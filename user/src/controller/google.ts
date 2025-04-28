@@ -1,8 +1,8 @@
 import {Request, Response, NextFunction} from "express";
 import { MetaUser } from "../models/MetaUser";
 import { User } from "../models/User";
-import {generateJWT} from "../utils";
 import HandlerError from "../error";
+import {generateJWT} from "../utils";
 import sequelize from "../db";
 
 
@@ -10,42 +10,59 @@ import sequelize from "../db";
 class GoogleController{
 
      async sign(req:Request, res:Response, next:NextFunction) {
-        const data:any = req.user;
+        // Проверка аутентификации
+        if (!req.isAuthenticated()) {
+            res.redirect(
+                `${process.env.URL_OAUTH}?` +
+                `error=user_is_not_authed` +
+                `app=google`
+            )
+        }
+    
+        // Получаем данные пользователя
+        const { displayName, email } = req.user as any;
+        const adress = req.header('x-forwarded-for') || req.ip;
 
-        if(!(data))
-            return next(HandlerError.badRequest("[GoogleController sign]", "Bad args!"));
+    
+        if (!displayName || !email) {
+            res.redirect(
+                `${process.env.URL_OAUTH}?` +
+                `error=bad_args` +
+                `app=google`
+            )
+        }
 
         const trans = await sequelize.transaction();
     
         try{
-            const name = data.displayName;
-            let user = await User.findOne({where:{name,social:"google"}});
+            let user = await User.findOne({where:{email: email}});
             if(!user)
-                user = await User.create({first_name:name, social: "google"}, { transaction: trans });
+                user = await User.create({email: email, first_name:displayName, second_name: 'Не указана', middle_name: 'Не указана', social: "github"}, { transaction: trans });
             
             let metaUser = await MetaUser.findOne({where:{userId:user.id}});
             if(!metaUser)
-                metaUser = await MetaUser.create({userId:user.id, lastPlaceIn: "google", lastTimeIn: new Date().toDateString()}, { transaction: trans });
+                metaUser = await MetaUser.create({userId:user.id, lastPlaceIn: adress, lastTimeIn: new Date().toDateString()}, { transaction: trans });
     
 
             await trans.commit();
             
-            const access = generateJWT({id:user.id,name:name,password:user.password, email:user.email}, false);
-            const refresh = generateJWT({id:user.id,name:name,password:user.password, email:user.email}, true);
+            const access = generateJWT({id:user.id,name:displayName,password:user.password, email:user.email}, false);
+            const refresh = generateJWT({id:user.id,name:displayName,password:user.password, email:user.email}, true);
     
             res.cookie("refresh",refresh,{httpOnly: false, secure: false, signed: false});
-            res.json({access,user:user, metaUser:metaUser});
-            
+            res.redirect(
+                `${process.env.URL_OAUTH}?` +
+                `access=${access}&` +
+                `user=${encodeURIComponent(JSON.stringify(user))}`
+            )
         }catch(err){
             await trans.rollback();
-            return next(HandlerError.internal("[GoogleController sign]",(err as Error).message));
+            res.redirect(
+                `${process.env.URL_OAUTH}?` +
+                `error=${(err as Error).message}&` +
+                `app=google`
+            )
         }
-    }
-
-
-    
-    async fail(req:Request, res:Response, next:NextFunction) {
-        res.json({sign:false});
     }
 }
 

@@ -190,4 +190,28 @@ export default class UserAPI{
             console.error(err);
         }
     }
+
+
+    static async loginGitHub(){
+        window.open(urlUserAPI+"/github", "_self");
+    }
+
+    static async loginGoogle(){
+        window.open(urlUserAPI+"/google", "_self");
+    }
+
+    static async refreshToken(user:UserType){
+        try{
+            const res = await api.post("/refresh",{},{
+                headers: {
+                    Authorization: `Bearer ${user.accessToken}`,
+                },
+            });
+            
+            console.log("refreshToken: ",res.data);
+            return res.data.access as string
+        }catch(err){
+            console.error(err)
+        }
+    } 
 }

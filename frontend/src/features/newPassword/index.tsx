@@ -28,7 +28,7 @@ const formSchema = z.object({
 
 
 function NewPasswordForm (props: {
-        onSubmit: (values:SubmitNewPasswordType)=>void,
+        onSubmit: (values:SubmitNewPasswordType)=>Promise<void>,
         load: boolean,
 }){
 

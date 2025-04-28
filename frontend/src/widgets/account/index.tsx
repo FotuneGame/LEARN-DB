@@ -7,11 +7,14 @@ import { useDispatch } from "react-redux"
 import {actions as actionsUser} from "@/shared/store/slice/user"
 import { UserType } from "@/types"
 
+import Log from "@/entities/log";
+
 
 
 function AccountWidget(props: {user: UserType}){
     const dispatch = useDispatch();
     const [load,setLoad] = useState<boolean>(false);
+    const [log,setLog] = useState<boolean>(false);
 
     const [defaultValues, setDefaultValues] = useState<SubmitAccountType>({
         first_name: props.user.first_name,
@@ -29,16 +32,19 @@ function AccountWidget(props: {user: UserType}){
             file: values.file,
           });
         try{
-          const res = await UserAPI.newData(
+            const res = await UserAPI.newData(
             {
                 ...props.user,
                 first_name: values.first_name,
                 second_name: values.second_name,
                 middle_name: values.middle_name,
             },values.file);
-            if(!res)
+            if(!res){
+                setLog(true);
                 return;
-          dispatch(actionsUser.setUser(res));
+            }
+            setLog(false);
+            dispatch(actionsUser.setUser(res));
         }catch(err){
             console.error(err);
         }finally{
@@ -47,7 +53,12 @@ function AccountWidget(props: {user: UserType}){
     }
 
     return(
-        <AccountForm onSubmit={onSubmit} user={props.user} load={load} defaultValues={defaultValues}/>
+        <> 
+            <AccountForm onSubmit={onSubmit} user={props.user} load={load} defaultValues={defaultValues}/>
+            {log &&
+                <Log name="Ошибка изменения данных аккаунта" message="Возможно вам следует повторить это позже, или загрузить соответстующие данные..." type="error" callback={()=>setLog(false)}/>
+            }
+        </>
     )
 }
 

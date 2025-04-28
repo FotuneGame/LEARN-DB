@@ -21,6 +21,7 @@ import {useTimer} from "@/shared/hooks";
 import type { SubmitCodeType } from "@/features/code";
 import CodeForm from "@/features/code";
 
+import Log from "@/entities/log";
 
 
 
@@ -46,51 +47,73 @@ function Code(){
     const navigate = useNavigate();
     const [time,reloadTimer] = useTimer();
     const [load,setLoad] = useState<boolean>(false);
+    const [log,setLog] = useState<boolean>(false);
     
 
     async function onSubmit(values: SubmitCodeType) {
         setLoad(true);
         try{
             const confirm = await UserAPI.confirm(email, values.code);
-            if(!confirm) return false;
+            if(!confirm) {
+                setLog(true);
+                return;
+            }
             let new_user;
             switch (code.type){
                 case "auth":
                     new_user = await UserAPI.login(auth);
-                    if(!new_user) return false;
+                    if(!new_user){
+                        setLog(true);
+                        return;
+                    }
                     dispatch(actionsUser.setUser(new_user));
                     dispatch(actionsCode.setDefault());
                     dispatch(actionsAuth.setDefault());
+                    setLog(false);
                     navigate(paths.main);
                     break;
                 case "forget":
                     dispatch(actionsForget.setConfirm(confirm));
+                    setLog(false);
                     navigate(paths.newPassword);
                     break;
                 case "registration":
                     new_user = await UserAPI.registration(registration);
-                    if(!new_user) return false;
+                    if(!new_user) {
+                        setLog(true);
+                        return;
+                    }
                     dispatch(actionsUser.setUser(new_user));
                     dispatch(actionsCode.setDefault());
                     dispatch(actionsRegistration.setDefault());
+                    setLog(false);
                     navigate(paths.main);
                     break;
                 case "security":
                     new_user = await UserAPI.newSecurity(security);
-                    if(!new_user) return false;
+                    if(!new_user) {
+                        setLog(true);
+                        return;
+                    }
                     dispatch(actionsUser.setUser(new_user));
                     dispatch(actionsCode.setDefault());
                     dispatch(actionsSecurity.setDefault());
+                    setLog(false);
                     navigate(paths.setting);
                     break;
                 case "delete_account":
                     new_user = await UserAPI.delete(user);
-                    if(!new_user) return false;
+                    if(!new_user) {
+                        setLog(true);
+                        return;
+                    }
                     dispatch(actionsUser.setDefault());
                     dispatch(actionsCode.setDefault());
+                    setLog(false);
                     navigate(paths.main);
                     break;
                 default:
+                    setLog(true);
                     alert("Простите, но попрбуйте ещё раз, без перезагрузки страницы")
                     navigate(paths.main);
                     break;
@@ -123,6 +146,9 @@ function Code(){
                 </div>
                 <CodeForm onSubmit={onSubmit} load={load} time={time} resendCode={resendCode}/>
             </Screen>
+            {log &&
+                <Log name="Ошибка подтверждения" message="Возможно вы ошиблись кодом, проверьте папку спам..." type="error" callback={()=>setLog(false)}/>
+            }
         </div>
     )
 }

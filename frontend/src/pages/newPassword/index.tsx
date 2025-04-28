@@ -17,10 +17,13 @@ import UserAPI from "@/shared/api/user"
 import type { SubmitNewPasswordType } from "@/features/newPassword";
 import NewPasswordForm from "@/features/newPassword";
 
+import Log from "@/entities/log";
+
 
 
 function NewPassword(){
 
+    const [log,setLog] = useState<boolean>(false);
     const forget = useSelector( (state:RootState) => state.forget);
     const [load,setLoad] = useState<boolean>(false);
     const dispatch = useDispatch();
@@ -31,10 +34,14 @@ function NewPassword(){
         setLoad(true);
         try{
             const user = await UserAPI.newPassword({...forget, password:values.password});
-            if(!user) return;
+            if(!user) {
+                setLog(true);
+                return;
+            }
             dispatch(actionsUser.setUser(user));
             dispatch(actionsCode.setDefault());
             dispatch(actionsForget.setDefault());
+            setLog(false);
             navigate(paths.main);
         }catch(err){
             console.error(err);
@@ -53,6 +60,9 @@ function NewPassword(){
                 </div>
                 <NewPasswordForm onSubmit={onSubmit} load={load}/>
             </Screen>
+            {log &&
+                <Log name="Ошибка смены пароля" message="Возможно вам стоит попробовать снова или зайти позже" type="error" callback={()=>setLog(false)}/>
+            }
         </div>
     )
 }

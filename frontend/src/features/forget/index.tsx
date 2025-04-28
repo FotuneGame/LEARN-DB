@@ -21,7 +21,7 @@ const formSchema = z.object({
 
 
 
-function ForgetForm (props: {onSubmit: (values:SubmitForgetType)=>void}){
+function ForgetForm (props: {onSubmit: (values:SubmitForgetType)=>Promise<void>}){
 
     const form = useForm<SubmitForgetType>({
         resolver: zodResolver(formSchema),

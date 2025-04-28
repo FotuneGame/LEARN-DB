@@ -1,10 +1,13 @@
 import Redux from './redux';
 import Routing from './routing';
+import Auth from './auth';
 
 function App(){
     return(
         <Redux>
-            <Routing />
+            <Auth>
+                <Routing />
+            </Auth>
         </Redux>
     )
 }

@@ -14,23 +14,31 @@ import ForgetForm from "@/features/forget";
 
 import UserAPI from "@/shared/api/user";
 
+import Log from "@/entities/log";
+import { useState } from "react";
+
 
 
 
 function Forget(){
 
+    const [log,setLog] = useState<boolean>(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     
 
     async function onSubmit(values: SubmitForgetType) {
         const res = await UserAPI.code(values.email, "forget");
-        if(!res) return;
+        if(!res) {
+            setLog(true);
+            return;
+        }
         dispatch(actionsCode.setType("forget"));
         dispatch(actionsForget.setEmail(values.email));
+        setLog(false);
         navigate(paths.code);
     }
-
+    
     return(
         <div className="h-[80vh] flex items-center justify-center">
             <Screen className="flex flex-col items-start gap-8 p-4">
@@ -40,6 +48,9 @@ function Forget(){
                 </div>
                 <ForgetForm onSubmit={onSubmit}/>
             </Screen>
+            {log &&
+                <Log name="Ошибка востановления" message="Возможно вам стоит перезагрузить страницу или зайти позже" type="error" callback={()=>setLog(false)}/>
+            }
         </div>
     )
 }
