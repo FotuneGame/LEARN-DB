@@ -8,6 +8,7 @@ routerEmployee.post("/add", controller.employee.add);
 routerEmployee.delete("/delete", controller.employee.delete);
 routerEmployee.get("/get", controller.employee.get);
 routerEmployee.get("/list", controller.employee.list);
+routerEmployee.get("/list_by_theme", controller.employee.listByTheme);
 routerEmployee.get("/statistics", controller.employee.statistics);
 routerEmployee.get("/problems", controller.employee.problems)
 routerEmployee.put("/update", controller.employee.update);

@@ -17,7 +17,7 @@ class UserController{
 
 
     async get(req:Request, res:Response, next:NextFunction){
-        const {id} = req.params;
+        const {id} = req.query;
         if(!Number(id))
             return next(HandlerError.badRequest("[User get]","Bad id!"));
 

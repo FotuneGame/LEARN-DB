@@ -29,7 +29,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: backend
+                name: backend-call-center
                 port:
                   number: 6001
           - path: /api/v1/user/?(.*)

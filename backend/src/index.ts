@@ -27,12 +27,12 @@ app.use(cors({
 }));
 app.use(express.json())
 app.use("/static",express.static(path.join(__dirname,'..', 'public')));
-app.use("/api",router);
+app.use("/",router);
 app.use(wares.error);
 
 
 
 app.listen(PORT, ()=>{
     poolSync();
-    console.log(`[server]: Web-server is running at http://localhost:${PORT}/api/`);
+    console.log(`[server]: Web-server is running at http://localhost:${PORT}/`);
 })

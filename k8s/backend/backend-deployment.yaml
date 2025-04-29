@@ -1,36 +1,38 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend
+  name: backend-call-center
 spec:
   progressDeadlineSeconds: 240
   selector:
     matchLabels:
-      app: backend-pod
-      tier: backend
+      app: call-center-pod
+      tier: backend-call-center
       track: stable
   replicas: 1
   template:
     metadata:
       labels:
-        app: backend-pod
-        tier: backend
+        app: call-center-pod
+        tier: backend-call-center
         track: stable
     spec:
       volumes:
-        - name: backend-volume
+        - name: call-center-volume
           persistentVolumeClaim:
-            claimName: backend-persistent-volume-claim
+            claimName: call-center-persistent-volume-claim
 
       containers:
-        - name: backend-container
+        - name: call-center-container
           image: grigorytitov/docker-call-center-backend-image:v1
-          #imagePullPolicy: Always #Для подгрузки обновлений с DockerHub
-          #command: ["npm","test"] #Для запуска тестов
+          imagePullPolicy: Always #Для подгрузки обновлений с DockerHub
+          #command: ["npm","test:db_tables"] #Для запуска тестов
           ports:
             - name: http
               containerPort: 6001
           env:
+            - name: URL_SITE
+              value: "https://localhost"
             - name: URL_BASE_INGRESS
               value: "https://localhost/api/v1/backend"
             #Internal services
@@ -66,7 +68,7 @@ spec:
             - name: REDIS_PORT
               value: "6379"
             - name: REDIS_DB
-              value: "0"
+              value: "1"
           volumeMounts:
             - mountPath: /public
-              name: backend-volume
+              name: call-center-volume

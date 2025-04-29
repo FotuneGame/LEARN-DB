@@ -26,7 +26,7 @@ userRouter.get(process.env.GITHUB_URL_CALLBACK as string, passport.authenticate(
 
 
 
-userRouter.get("/data/:id", controller.UserController.get);
+userRouter.get("/get", controller.UserController.get);
 userRouter.post("/refresh",ware.tokensWare, controller.UserController.refresh);
 
 userRouter.post("/confirm", ware.checkCodeWare, controller.UserController.confirm);

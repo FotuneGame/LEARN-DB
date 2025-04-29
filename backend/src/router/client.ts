@@ -9,6 +9,6 @@ routerClient.delete("/delete", controller.client.delete);
 routerClient.get("/get", controller.client.get);
 routerClient.get("/list", controller.client.list);
 routerClient.put("/update", controller.client.update);
-routerClient.get("/change/employee", controller.client.changeEmployee);
+routerClient.post("/change/employee", controller.client.changeEmployee);
 
 export default routerClient;
