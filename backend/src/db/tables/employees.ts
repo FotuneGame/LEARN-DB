@@ -77,6 +77,19 @@ class EmployeeTable implements ITable, ICRUD{
         }
     }
 
+    async readByEmail(email:string){
+        try{
+            const result = await pool.query(`SELECT * FROM ${this.name} WHERE email=$1;`,
+                [email]
+            );
+            return result.rows;
+        }catch(err){
+            console.log(err);
+            return false;
+        }
+    }
+
+
     async readAll(all:boolean,limit:number, offset:number){
         try{
             if(all){

@@ -1,14 +1,15 @@
 import express, {Router} from "express";
 import { controller } from "../controller";
+import { wares } from "../middleware";
 
 const routerClient:Router = express.Router();
 
 
-routerClient.post("/add", controller.client.add);
-routerClient.delete("/delete", controller.client.delete);
+routerClient.post("/add", wares.tokensWare, wares.employeeWare, controller.client.add);
+routerClient.delete("/delete", wares.tokensWare, wares.employeeWare, controller.client.delete);
 routerClient.get("/get", controller.client.get);
 routerClient.get("/list", controller.client.list);
-routerClient.put("/update", controller.client.update);
-routerClient.post("/change/employee", controller.client.changeEmployee);
+routerClient.put("/update", wares.tokensWare, wares.employeeWare, controller.client.update);
+routerClient.post("/change/employee", wares.tokensWare, wares.employeeWare, controller.client.changeEmployee);
 
 export default routerClient;

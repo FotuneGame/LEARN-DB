@@ -13,6 +13,7 @@ import sequelize from "./db";
 import multer from 'multer';
 import path from "path";
 import cors from "cors";
+import initKafka from "./kafka/init";
 
 
 
@@ -69,6 +70,7 @@ app.use(ware.errorWare);
 
 app.listen(PORT, async ()=>{
     try{
+        await initKafka();
         await sequelize.authenticate();
         await sequelize.sync();
         console.log(`[user]: User is running at http://localhost:`+PORT);
@@ -76,5 +78,6 @@ app.listen(PORT, async ()=>{
     }catch(err){
         console.log(`[user]: Error: `, err);
         logger.error("[user]: User is NOT running. Error: "+err);
+        await CustomKafka.shutdown();
     }
 })

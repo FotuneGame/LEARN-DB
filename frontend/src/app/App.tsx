@@ -1,12 +1,15 @@
 import Redux from './redux';
 import Routing from './routing';
 import Auth from './auth';
+import AuthEmployee from "./authEmployee"
 
 function App(){
     return(
         <Redux>
             <Auth>
-                <Routing />
+                <AuthEmployee>
+                    <Routing />
+                </AuthEmployee>
             </Auth>
         </Redux>
     )

@@ -33,6 +33,10 @@ kubectl apply -f k8s/kafka/
 kubectl apply -f k8s/postgree/
 kubectl apply -f k8s/redis/
 ```
+```
+kubectl get pods
+kubectl logs kafka-0
+```
 
 ### Подключение манифестов собственного ПО 
 После запуска доп ПО.
@@ -71,6 +75,16 @@ minikube service my-ingress --url
 Если захотелось зайти в контейнер и выполнить, например тесты...
 ```
 kubectl exec -it <pod_name> -- /bin/bash 
+```
+
+#### Для проверки наличия топиков в kafka-0
+```
+kubectl exec kafka-0 -- kafka-topics.sh --list --bootstrap-server localhost:9092 
+kubectl exec kafka-0 -- kafka-console-consumer.sh --topic auth-requests --from-beginning --bootstrap-server localhost:9092
+kubectl exec kafka-0 -- kafka-console-consumer.sh --topic auth-responses --from-beginning --bootstrap-server localhost:9092
+kubectl exec kafka-0 -- kafka-consumer-groups.sh --list --bootstrap-server localhost:9092
+kubectl exec kafka-0 -- kafka-consumer-groups.sh --describe --group backend-service-group --bootstrap-server localhost:9092 
+kubectl exec kafka-0 -- kafka-consumer-groups.sh --describe --group user-service-group --bootstrap-server localhost:9092 
 ```
 
 #### Важное

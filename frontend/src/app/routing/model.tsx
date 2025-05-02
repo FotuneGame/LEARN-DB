@@ -9,7 +9,9 @@ const Code = React.lazy(() => import("@/pages/code"));
 const Oauth = React.lazy(() => import("@/pages/oauth"));
 const About = React.lazy(() => import("@/pages/about"));
 const Admin = React.lazy(() => import("@/pages/admin"));
-const Forget = React.lazy(() => import("@/pages/forget/forget"));
+const Forget = React.lazy(() => import("@/pages/forget"));
+const Clients = React.lazy(() => import("@/pages/clients"));
+const Company = React.lazy(() => import("@/pages/company"));
 const NotFound = React.lazy(() => import("@/pages/notFound"));
 const Settings = React.lazy(() => import("@/pages/setting"));
 const NewPassword = React.lazy(() => import("@/pages/newPassword"));
@@ -69,6 +71,16 @@ const routes: RouteObject[] = [
             {
                 path: paths.oauth,
                 element: <Oauth />,
+                errorElement: <NotFound />
+            },
+            {
+                path: paths.company,
+                element: <Company />,
+                errorElement: <NotFound />
+            },
+            {
+                path: paths.clients,
+                element: <Clients />,
                 errorElement: <NotFound />
             }
         ]

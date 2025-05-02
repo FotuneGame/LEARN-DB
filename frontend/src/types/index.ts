@@ -10,6 +10,11 @@ export type UserType = {
     phone: string,
 }
 
+export type EmployeeType = {
+    id: number,
+    post: string,
+}
+
 
 export type AuthStoryType = {
     password: string,

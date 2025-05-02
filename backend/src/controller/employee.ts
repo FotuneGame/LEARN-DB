@@ -139,6 +139,47 @@ class Employee{
             return next(HandlerError.internal("employee problems:",(err as Error).message));
         }
     }
+
+    async login(req:Request, res:Response,next:NextFunction){
+        const {email} = req.body;
+        const {first_name, second_name, middle_name, phone} = req.body;
+        if(!email)
+            return next(HandlerError.badRequest("employee login:","Have not email!"));
+        if(!first_name || !second_name || !middle_name)
+            return next(HandlerError.badRequest("employee login:","Have not args user (first_name, second_name, middle_name)!"));
+        try{
+            
+            let employee = await dbEmployees.readByEmail(email)
+            if(!employee)
+                return next(HandlerError.badRequest("employee login", "Cannot find array of employees" ));
+
+            if (!employee[0]){
+                const list = process.env.ADMIN_EMAILS?.split(" ") || [];
+                if(list.includes(email)){
+                    employee = await dbEmployees.create({
+                        first_name:first_name,
+                        second_name:second_name,
+                        middle_name:middle_name,
+                        phone:phone,
+                        email:email,
+                        post: "Админ"
+                    });
+                    if(employee && employee[0]){
+                        res.json({employee:employee[0]});
+                        return;
+                    }else{
+                        return next(HandlerError.badRequest("employee login", "Cannot canot create admin employee account" ));
+                    }
+                }else{
+                    return next(HandlerError.badRequest("employee login", "Cannot loggin to employee account" ));
+                }
+            }else{
+                res.json({employee:employee[0]});
+            }
+        }catch(err){
+            return next(HandlerError.internal("employee login:",(err as Error).message));
+        }
+    }
 }
 
 

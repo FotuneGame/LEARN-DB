@@ -90,9 +90,11 @@ spec:
             - name: KAFKA_BROCKERS_HOST
               value: kafka
             - name: KAFKA_BROCKERS_PORT
-              value: "29092"
+              value: "9092"
+            - name: KAFKA_BROCKERS_PARTIOTIONS
+              value: "1"
             - name: KAFKA_BROCKERS_REPLICATION_FACTOR
-              value: "2"
+              value: "1"
 
             - name: REDIS_NAME
               value: ""
