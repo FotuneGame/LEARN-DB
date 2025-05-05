@@ -10,9 +10,13 @@ export type UserType = {
     phone: string,
 }
 
+export type AdminType = "Админ";
+
+export type PostType = "Руководитель" | "Менеджер" | "Бухгалтер" | "Сис. админ" | "Сотрудник" | AdminType;
+
 export type EmployeeType = {
     id: number,
-    post: string,
+    post: PostType,
 }
 
 

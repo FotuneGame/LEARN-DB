@@ -8,8 +8,8 @@ import HandlerError from "../error";
 //Использовать employees_by_theme и employees
 class Employee{
     async add(req:Request, res:Response,next:NextFunction){
-        const {first_name, second_name, middle_name, phone , email , post} = req.body;
-        if(!first_name || !second_name || !middle_name || !phone || !email || !post)
+        const {first_name, second_name, middle_name, phone , new_email , post} = req.body;
+        if(!first_name || !second_name || !middle_name || !phone || !new_email || !post)
             return next(HandlerError.internal("employee add:","Bad args!"));
         try{
             const employee = await dbEmployees.create({
@@ -17,7 +17,7 @@ class Employee{
                 second_name:second_name,
                 middle_name:middle_name,
                 phone:phone,
-                email:email,
+                email:new_email,
                 post:post
             });
 
@@ -77,17 +77,22 @@ class Employee{
     }
 
     async update(req:Request, res:Response,next:NextFunction){
-        const {id, first_name, second_name, middle_name, phone , email , post} = req.body;
-        if(!Number(id) || !first_name || !second_name || !middle_name || !phone || !email || !post)
+        const {id, first_name, second_name, middle_name, phone , new_email , post} = req.body;
+        if(!Number(id))
             return next(HandlerError.internal("employee update:","Bad args!"));
         try{
+
+            const oldEmployee = await dbEmployees.read(Number(id));
+            if(!oldEmployee)
+                return next(HandlerError.internal("employee update:","Cannot update oldEmployee with id: "+id));
+
             const employee = await dbEmployees.update(Number(id),{
-                first_name:first_name,
-                second_name:second_name,
-                middle_name:middle_name,
-                phone:phone,
-                email:email,
-                post:post
+                first_name: first_name ?? oldEmployee[0].first_name,
+                second_name:second_name ?? oldEmployee[0].second_name,
+                middle_name:middle_name ?? oldEmployee[0].middle_name,
+                phone:phone ?? oldEmployee[0].phone,
+                email:new_email ?? oldEmployee[0].email,
+                post:post ?? oldEmployee[0].post
             });
 
             if(!employee)
@@ -99,7 +104,7 @@ class Employee{
     }
 
     async delete(req:Request, res:Response,next:NextFunction){
-        const {id} = req.body;
+        const {id} = req.query;
         if(!Number(id))
             return next(HandlerError.internal("employee delete:","Bad args!"));
         try{
@@ -143,20 +148,21 @@ class Employee{
     async login(req:Request, res:Response,next:NextFunction){
         const {email} = req.body;
         const {first_name, second_name, middle_name, phone} = req.body;
+        console.log("Wtf?")
         if(!email)
             return next(HandlerError.badRequest("employee login:","Have not email!"));
         if(!first_name || !second_name || !middle_name)
             return next(HandlerError.badRequest("employee login:","Have not args user (first_name, second_name, middle_name)!"));
         try{
             
-            let employee = await dbEmployees.readByEmail(email)
-            if(!employee)
-                return next(HandlerError.badRequest("employee login", "Cannot find array of employees" ));
+            let oldEmployee = await dbEmployees.readByEmail(email)
+            if(!oldEmployee)
+                return next(HandlerError.badRequest("employee login", "Cannot find array of oldEmployee" ));
 
-            if (!employee[0]){
+            if (!oldEmployee[0]){
                 const list = process.env.ADMIN_EMAILS?.split(" ") || [];
                 if(list.includes(email)){
-                    employee = await dbEmployees.create({
+                    const employee = await dbEmployees.create({
                         first_name:first_name,
                         second_name:second_name,
                         middle_name:middle_name,
@@ -174,7 +180,17 @@ class Employee{
                     return next(HandlerError.badRequest("employee login", "Cannot loggin to employee account" ));
                 }
             }else{
-                res.json({employee:employee[0]});
+                const employeeUpdate = await dbEmployees.update(oldEmployee[0].id,{
+                    first_name: first_name ?? oldEmployee[0].first_name,
+                    second_name:second_name ?? oldEmployee[0].second_name,
+                    middle_name:middle_name ?? oldEmployee[0].middle_name,
+                    phone:phone ?? oldEmployee[0].phone,
+                    email:email ?? oldEmployee[0].email,
+                    post: oldEmployee[0].post
+                });
+                if(!employeeUpdate)
+                    return next(HandlerError.badRequest("employee login", "Cannot update employee" ));
+                res.json({employee:employeeUpdate[0]});
             }
         }catch(err){
             return next(HandlerError.internal("employee login:",(err as Error).message));

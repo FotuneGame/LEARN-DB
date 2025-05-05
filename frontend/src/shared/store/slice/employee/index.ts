@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import type { EmployeeType } from '@/types'
+import type { EmployeeType, PostType } from '@/types'
 
 
 const loadLoacalStorage = () =>{
   return{
     id: JSON.parse(localStorage.getItem("employee") as string)?.id ?? 0,
-    post: JSON.parse(localStorage.getItem("employee") as string)?.post,
+    post: JSON.parse(localStorage.getItem("employee") as string)?.post as PostType,
   }
 }
 const InitialState: EmployeeType = loadLoacalStorage();

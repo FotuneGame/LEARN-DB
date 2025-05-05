@@ -8,11 +8,12 @@ import { JWTType } from "@/utils/types";
 class Auth{
 
     async init() {
-        return await CustomKafka.subscribe({groupId: "user-service-group"},["auth-requests"],[this.handler],true);
+        return await CustomKafka.subscribe({groupId: "user-service-group"},["auth-requests"],[this.handler],false);
     }
 
     async handler(data:HandlerMessageArg){
         const parse = JSON.parse(data.message.value?.toString() || '{}');
+        console.log(parse)
         if (parse.access || parse.refresh) {
             
             const decoded_access = verifyJWT(parse.access);

@@ -83,7 +83,7 @@ class Theme{
     }
 
     async delete(req:Request, res:Response,next:NextFunction){
-        const {id} = req.body;
+        const {id} = req.query;
         if(!Number(id))
             return next(HandlerError.internal("theme delete:","Bad args!"));
         try{

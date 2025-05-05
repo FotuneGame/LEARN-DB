@@ -4,7 +4,7 @@ import { Separator } from "@/shared/ui/separator";
 import { Avatar, AvatarImage, AvatarFallback } from "@/shared/ui/avatar";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger} from "@/shared/ui/navigation-menu"
 
-import type {UserType} from "@/types";
+import type {PostType, UserType} from "@/types";
 import {paths} from "@/shared/const"
 
 import {RootState} from "@/shared/store"
@@ -32,7 +32,7 @@ function SingMenu (props: {sign: ()=> void}){
 
 
 
-function AuthedMenu (props: {user:UserType, exit: ()=>void}){
+function AuthedMenu (props: {user:UserType, post: PostType, exit: ()=>void}){
 
     return (
         <NavigationMenuItem>       
@@ -46,6 +46,9 @@ function AuthedMenu (props: {user:UserType, exit: ()=>void}){
                 <NavigationMenuLink to={paths.setting}>Настройки</NavigationMenuLink>
                 <NavigationMenuLink to={paths.company}>Компания</NavigationMenuLink>
                 <NavigationMenuLink to={paths.clients}>Клиенты</NavigationMenuLink>
+
+                {props.post === "Админ" && <NavigationMenuLink to={paths.admin}>Админка</NavigationMenuLink>}
+
                 <Separator className="my-2"/>
                 <Button variant="destructive" onClick={props.exit}>
                     Выйти
@@ -60,6 +63,7 @@ function AuthedMenu (props: {user:UserType, exit: ()=>void}){
 
 function Menu (){
     const user = useSelector((state:RootState) => state.user);
+    const post = useSelector((state:RootState) => state.employee.post);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -75,7 +79,7 @@ function Menu (){
         <NavigationMenu>
             <NavigationMenuList className="gap-2">
                 {
-                    user.accessToken ? <AuthedMenu user={user} exit={exit}/> : <SingMenu sign={sign}/>
+                    user.accessToken ? <AuthedMenu user={user} post={post} exit={exit}/> : <SingMenu sign={sign}/>
                 }
             </NavigationMenuList>
         </NavigationMenu>

@@ -25,7 +25,7 @@ function AuthEmployee(props:{children: ReactElement}){
 
     useEffect(()=>{
         authEmployee();
-    },[user.accessToken]);
+    },[user.accessToken, user.first_name, user.second_name, user.middle_name, user.phone]);
 
     return(
         <>

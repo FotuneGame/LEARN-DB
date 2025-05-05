@@ -96,7 +96,7 @@ class Specialist{
     }
 
     async delete(req:Request, res:Response,next:NextFunction){
-        const {id} = req.body;
+        const {id} = req.query;
         if(!Number(id))
             return next(HandlerError.internal("specialist delete:","Bad args!"));
         try{
