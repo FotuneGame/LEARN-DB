@@ -10,6 +10,7 @@ routerTheme.delete("/delete", wares.tokensWare, wares.employeeWare, controller.t
 routerTheme.get("/get", controller.theme.get);
 routerTheme.get("/find", controller.theme.findResults);
 routerTheme.get("/list", controller.theme.list);
+routerTheme.get("/list_all", controller.theme.listAll);
 routerTheme.get("/statistics", controller.theme.statistics);
 routerTheme.put("/update", wares.tokensWare, wares.employeeWare, controller.theme.update);
 

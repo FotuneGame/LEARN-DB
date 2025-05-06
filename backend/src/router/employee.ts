@@ -10,6 +10,7 @@ routerEmployee.post("/login", wares.tokensWare, controller.employee.login);
 routerEmployee.delete("/delete", wares.tokensWare, wares.adminsWare, controller.employee.delete);
 routerEmployee.get("/get", controller.employee.get);
 routerEmployee.get("/list", controller.employee.list);
+routerEmployee.get("/list_all", controller.employee.listAll);
 routerEmployee.get("/list_by_theme", controller.employee.listByTheme);
 routerEmployee.get("/statistics", controller.employee.statistics);
 routerEmployee.get("/problems", controller.employee.problems)

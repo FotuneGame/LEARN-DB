@@ -13,9 +13,9 @@ class Problem{
         try{
             const problem = await dbProblems.create({
                 id_theme: Number(id_theme),
-                id_employee: Number(id_employee) ?? null,
-                id_answer: Number(id_answer) ?? null,
-                id_specialist: Number(id_specialist) ?? null,
+                id_employee: Number(id_employee) > 0 ? Number(id_employee) : null,
+                id_answer: Number(id_answer) > 0 ? Number(id_answer) : null,
+                id_specialist: Number(id_specialist) > 0 ? Number(id_specialist) : null,
                 name: name,
                 describe: describe
             });
@@ -64,9 +64,9 @@ class Problem{
         try{
             const problem = await dbProblems.update(Number(id),{
                 id_theme: Number(id_theme),
-                id_employee: Number(id_employee) ?? null,
-                id_answer: Number(id_answer) ?? null,
-                id_specialist: Number(id_specialist) ?? null,
+                id_employee: Number(id_employee) > 0 ? Number(id_employee) : null,
+                id_answer: Number(id_answer) > 0 ? Number(id_answer) : null,
+                id_specialist: Number(id_specialist) > 0 ? Number(id_specialist) : null,
                 name: name,
                 describe: describe
             });

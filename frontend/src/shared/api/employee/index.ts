@@ -53,6 +53,45 @@ export default class EmployeeAPI{
         }
     }
 
+    static async getListAll(){
+        try{
+            const res = await api.get(`/list_all`);
+            console.log("list of all employes: ",res.data);
+            if(!res.data.list)
+                return null;
+            return res.data.list;
+        }catch(err){
+            console.error(err);
+            return null;
+        }
+    }
+
+    static async getListByTheme(id_theme:number){
+        try{
+            const res = await api.get(`/list_by_theme?id_theme=${id_theme}`);
+            console.log("list of employees by theme: ",res.data);
+            if(!res.data.list)
+                return null;
+            return res.data.list;
+        }catch(err){
+            console.error(err);
+            return null;
+        }
+    }
+
+    static async getListProblems(id_employee: number){
+        try{
+            const res = await api.get(`/problems?id_employee=${id_employee}`);
+            console.log("problems of employee: ",res.data);
+            if(!res.data.problems)
+                return null;
+            return res.data.problems;
+        }catch(err){
+            console.error(err);
+            return null;
+        }
+    }
+
     static async getById(id: number){
         try{
             const res = await api.get(`/get?id=${id}`);

@@ -61,13 +61,25 @@ class Employee{
         }
     }
 
+    
+    async listAll(req:Request, res:Response,next:NextFunction){
+        try{
+            const list = await dbEmployees.readAll(true, 1, 0);
+            if(!list)
+                return next(HandlerError.internal("employee list all:","Cannot get list of employees!"));
+            res.json({list:list});
+        }catch(err){
+            return next(HandlerError.internal("employee list all:",(err as Error).message));
+        }
+    }
+
     async listByTheme(req:Request, res:Response,next:NextFunction){
-        const {id_theme,limit, offset} = req.query;
-        if(!Number(id_theme) || !Number(limit) || (!Number(offset) && Number(offset)<0))
+        const {id_theme} = req.query;
+        if(!Number(id_theme))
             return next (HandlerError.badRequest("employee listByTheme:","Bad args!"));
 
         try{
-            const list = await dbEmployeesByTheme.readAll(Number(id_theme),false, Number(limit), Number(offset));
+            const list = await dbEmployeesByTheme.readAll(Number(id_theme),true, 1,0);
             if(!list)
                 return next(HandlerError.internal("employee listByTheme:","Cannot get listByTheme of employees!"));
             res.json({list:list});

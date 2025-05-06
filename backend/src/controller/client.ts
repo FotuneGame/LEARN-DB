@@ -70,6 +70,20 @@ class Client{
             return next(HandlerError.internal("client list:",(err as Error).message));
         }
     }
+    
+
+    
+    async listAll(req:Request, res:Response,next:NextFunction){
+        try{
+            const list = await dbClients.readAll(true, 1, 0);
+            if(!list)
+                return next(HandlerError.internal("client list all:","Cannot get list of clientS!"));
+            res.json({list:list});
+        }catch(err){
+            return next(HandlerError.internal("client list all:",(err as Error).message));
+        }
+    }
+
 
     async delete(req:Request, res:Response,next:NextFunction){
         const {id} = req.query;

@@ -69,9 +69,10 @@ class CallTable implements ITable, ICRUD{
                 phone,
                 date,
                 time,
-                id_client
-            ) VALUES ($1, $2, $3, $4) RETURNING * ;`,
-                [data.phone, data.date, data.time.toTimeString().split(' ')[0], data.id_client]
+                id_client,
+                is_spam
+            ) VALUES ($1, $2, $3, $4, $5) RETURNING * ;`,
+                [data.phone, data.date, data.time, data.id_client, data.is_spam]
             );
             return result.rows;
         }catch(err){
@@ -117,7 +118,7 @@ class CallTable implements ITable, ICRUD{
                 time=$3,
                 id_client=$4,
                 is_spam=$5 WHERE id=$6 RETURNING * ;`,
-                [data.phone, data.date, data.time.toTimeString().split(' ')[0], data.id_client, data.is_spam, id]
+                [data.phone, data.date, data.time, data.id_client, data.is_spam, id]
             );
             return result.rows;
         }catch(err){

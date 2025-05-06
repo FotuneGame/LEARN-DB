@@ -59,12 +59,12 @@ class Specialist{
     }
 
     async listByTheme(req:Request, res:Response,next:NextFunction){
-        const {id_theme,limit, offset} = req.query;
-        if(!Number(id_theme) || !Number(limit) || (!Number(offset) && Number(offset)<0))
+        const {id_theme} = req.query;
+        if(!Number(id_theme))
             return next (HandlerError.badRequest("specialist listByTheme:","Bad args!"));
 
         try{
-            const list = await dbSpecialistsByTheme.readAll(Number(id_theme),false, Number(limit), Number(offset));
+            const list = await dbSpecialistsByTheme.readAll(Number(id_theme),true,1,0);
             if(!list)
                 return next(HandlerError.internal("specialist listByTheme:","Cannot get listByTheme of specialists!"));
             res.json({list:list});

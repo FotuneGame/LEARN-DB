@@ -88,6 +88,18 @@ class CallbackTable implements ITable, ICRUD{
         }
     }
 
+    async readByIdProblem(id_problem:number){
+        try{
+            const result = await pool.query(`SELECT * FROM ${this.name} WHERE id_problem=$1;`,
+                [id_problem]
+            );
+            return result.rows;
+        }catch(err){
+            console.log(err);
+            return false;
+        }
+    }
+
     async readAll(all:boolean,limit:number, offset:number){
         try{
             if(all){

@@ -6,11 +6,14 @@ import Layout from "@/pages/layout";
 const Auth = React.lazy(() => import("@/pages/auth"));
 const Main = React.lazy(() => import("@/pages/main"));
 const Code = React.lazy(() => import("@/pages/code"));
+const Calls = React.lazy(() => import("@/pages/calls"));
 const Oauth = React.lazy(() => import("@/pages/oauth"));
 const About = React.lazy(() => import("@/pages/about"));
 const Admin = React.lazy(() => import("@/pages/admin"));
 const Forget = React.lazy(() => import("@/pages/forget"));
 const Clients = React.lazy(() => import("@/pages/clients"));
+const Problems = React.lazy(() => import("@/pages/problems"));
+const Themes = React.lazy(() => import("@/pages/themes"));
 const Company = React.lazy(() => import("@/pages/company"));
 const NotFound = React.lazy(() => import("@/pages/notFound"));
 const Settings = React.lazy(() => import("@/pages/setting"));
@@ -81,6 +84,21 @@ const routes: RouteObject[] = [
             {
                 path: paths.clients,
                 element: <Clients />,
+                errorElement: <NotFound />
+            },
+            {
+                path: paths.problems,
+                element: <Problems />,
+                errorElement: <NotFound />
+            },
+            {
+                path: paths.themes,
+                element: <Themes />,
+                errorElement: <NotFound />
+            },
+            {
+                path: paths.calls,
+                element: <Calls />,
                 errorElement: <NotFound />
             }
         ]

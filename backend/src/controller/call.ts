@@ -6,8 +6,8 @@ import HandlerError from "../error";
 
 class Call{
     async add(req:Request, res:Response,next:NextFunction){
-        const {id_client, phone, date, time} = req.body;
-        if(!id_client || !phone || !date || !time)
+        const {id_client, phone, date, time, is_spam} = req.body;
+        if(!id_client || !phone || !date || !time || is_spam===undefined)
             return next (HandlerError.badRequest("call add:","Bad args!"));
         
         try{
@@ -16,7 +16,7 @@ class Call{
                 phone:phone,
                 date: date,
                 time: time,
-                is_spam: false
+                is_spam: is_spam 
             });
 
             if(!call)

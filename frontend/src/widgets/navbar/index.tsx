@@ -35,26 +35,30 @@ function SingMenu (props: {sign: ()=> void}){
 function AuthedMenu (props: {user:UserType, post: PostType, exit: ()=>void}){
 
     return (
-        <NavigationMenuItem>       
-            <NavigationMenuTrigger>
-                <Avatar>
-                    <AvatarImage src={props.user.avatar} />
-                    <AvatarFallback>А</AvatarFallback>
-                </Avatar>
-            </NavigationMenuTrigger>
-            <NavigationMenuContent className="flex flex-col gap-2">
-                <NavigationMenuLink to={paths.setting}>Настройки</NavigationMenuLink>
-                <NavigationMenuLink to={paths.company}>Компания</NavigationMenuLink>
-                <NavigationMenuLink to={paths.clients}>Клиенты</NavigationMenuLink>
+        <>
+            <NavigationMenuLink to={paths.company}>Компания</NavigationMenuLink>
+            <NavigationMenuItem>       
+                <NavigationMenuTrigger>
+                    <Avatar>
+                        <AvatarImage src={props.user.avatar} />
+                        <AvatarFallback>А</AvatarFallback>
+                    </Avatar>
+                </NavigationMenuTrigger>
+                <NavigationMenuContent className="flex flex-col gap-2">
+                    <NavigationMenuLink to={paths.setting}>Настройки</NavigationMenuLink>
+                    <NavigationMenuLink to={paths.calls}>Звонки</NavigationMenuLink>
+                    <NavigationMenuLink to={paths.clients}>Клиенты</NavigationMenuLink>
+                    <NavigationMenuLink to={paths.problems}>Проблемы</NavigationMenuLink>
+                    <NavigationMenuLink to={paths.themes}>Темы</NavigationMenuLink>
+                    {props.post === "Админ" && <NavigationMenuLink to={paths.admin}>Админка</NavigationMenuLink>}
 
-                {props.post === "Админ" && <NavigationMenuLink to={paths.admin}>Админка</NavigationMenuLink>}
-
-                <Separator className="my-2"/>
-                <Button variant="destructive" onClick={props.exit}>
-                    Выйти
-                </Button>
-            </NavigationMenuContent>
-        </NavigationMenuItem>
+                    <Separator className="my-2"/>
+                    <Button variant="destructive" onClick={props.exit}>
+                        Выйти
+                    </Button>
+                </NavigationMenuContent>
+            </NavigationMenuItem>
+        </>
     )
 }
 

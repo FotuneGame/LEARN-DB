@@ -9,6 +9,7 @@ routerClient.post("/add", wares.tokensWare, wares.employeeWare, controller.clien
 routerClient.delete("/delete", wares.tokensWare, wares.employeeWare, controller.client.delete);
 routerClient.get("/get", controller.client.get);
 routerClient.get("/list", controller.client.list);
+routerClient.get("/list_all", controller.client.listAll);
 routerClient.put("/update", wares.tokensWare, wares.employeeWare, controller.client.update);
 routerClient.post("/change/employee", wares.tokensWare, wares.employeeWare, controller.client.changeEmployee);
 

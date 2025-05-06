@@ -51,6 +51,17 @@ class Theme{
         }
     }
 
+    async listAll(req:Request, res:Response,next:NextFunction){
+        try{
+            const list = await dbThemes.readAll(true, 1, 0);
+            if(!list)
+                return next(HandlerError.internal("theme list all:","Cannot get list of themes!"));
+            res.json({list:list});
+        }catch(err){
+            return next(HandlerError.internal("theme list all:",(err as Error).message));
+        }
+    }
+
     //use find_by_theme
     async findResults(req:Request, res:Response,next:NextFunction){
         const {id_theme} = req.query;

@@ -17,6 +17,66 @@ export type PostType = "Руководитель" | "Менеджер" | "Бух
 export type EmployeeType = {
     id: number,
     post: PostType,
+    first_name?: string,
+    second_name?: string,
+    middle_name?: string,
+}
+
+export type SpecialistType = {
+    id: number,
+    phone: string,
+    email: string,
+    profession: string,
+    adress: string,
+    first_name: string,
+    second_name: string,
+    middle_name: string,
+}
+
+export type AnswerType = {
+    id: number,
+    name: string,
+    describe: string,
+    important: string
+}
+
+export type ProblemType = {
+    id: number,
+    name: string,
+    describe: string,
+    id_theme: number,
+    id_specialist: number,
+    id_answer: number,
+    id_employee: number
+}
+
+export type CallbackType = {
+    id: number,
+    phone: string,
+    email: string,
+    id_problem: number,
+}
+
+export type ThemeType ={
+    id: number,
+    name: string
+}
+
+export type ClientType = {
+    id: number,
+    id_employee: number,
+    first_name: string,
+    second_name: string,
+    middle_name: string,
+}
+
+export type CallType={
+    id: number,
+    id_client: number,
+    phone: string,
+    date: string,
+    time: string,
+    is_spam: boolean
 }
 
 

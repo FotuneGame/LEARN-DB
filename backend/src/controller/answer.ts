@@ -58,12 +58,12 @@ class Answer{
     }
 
     async listByTheme(req:Request, res:Response,next:NextFunction){
-        const {id_theme,limit, offset} = req.query;
-        if(!Number(id_theme) || !Number(limit) || (!Number(offset) && Number(offset)<0))
+        const {id_theme} = req.query;
+        if(!Number(id_theme))
             return next (HandlerError.badRequest("answer listByTheme:","Bad args!"));
 
         try{
-            const list = await dbAnswersByTheme.readAll(Number(id_theme),false, Number(limit), Number(offset));
+            const list = await dbAnswersByTheme.readAll(Number(id_theme),true, 1,0);
             if(!list)
                 return next(HandlerError.internal("answer listByTheme:","Cannot get listByTheme of answer!"));
             res.json({list:list});
