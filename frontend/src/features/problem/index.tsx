@@ -3,6 +3,7 @@ import { Button } from "@/shared/ui/button"
 import { Textarea } from "@/shared/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/ui/select";
 import { Form, FormControl, FormDescription, FormField, FormLabel, FormItem, FormMessage } from "@/shared/ui/form"
+import { ScrollArea } from "@/shared/ui/scroll-area";
 import { Loader2 } from "lucide-react"
 import { useState, useEffect } from "react"
 
@@ -81,10 +82,10 @@ function ProblemForm (props: {
         form.reset();
         form.setValue("name",props.defaultValues.name);
         form.setValue("describe",props.defaultValues.describe);
-        form.setValue("id_theme","");
-        form.setValue("id_specialist","");
-        form.setValue("id_answer","");
-        form.setValue("id_employee","");
+        form.setValue("id_theme",props.defaultValues.id_theme);
+        form.setValue("id_specialist",props.defaultValues.id_specialist);
+        form.setValue("id_answer",props.defaultValues.id_answer);
+        form.setValue("id_employee",props.defaultValues.id_employee);
         listOfTheme().then(res=>setThemes(res));
     },[props.defaultValues])
     
@@ -146,12 +147,14 @@ function ProblemForm (props: {
                                                     <SelectValue/>
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    {themes && themes.map((theme)=>{
-                                                        return(
-                                                            <SelectItem key={"theme_list_"+theme.id} value={theme.id.toString()}>{theme.name}</SelectItem>
-                                                        )
-                                                    })
-                                                    }
+                                                    <ScrollArea className="min-h-24 min-w-12 rounded-md">
+                                                        {themes && themes.map((theme)=>{
+                                                            return(
+                                                                <SelectItem key={"theme_list_"+theme.id} value={theme.id.toString()}>{theme.name}</SelectItem>
+                                                            )
+                                                        })
+                                                        }
+                                                    </ScrollArea>
                                                 </SelectContent>
                                             </Select>
                                         </div>
@@ -175,12 +178,14 @@ function ProblemForm (props: {
                                                         <SelectValue/>
                                                     </SelectTrigger>
                                                     <SelectContent>
-                                                        {answers && answers.map((answer)=>{
-                                                            return(
-                                                                <SelectItem key={"answers_list_"+answer.id} value={answer.id+""}>{answer.name}</SelectItem>
-                                                            )
-                                                        })
-                                                        }
+                                                        <ScrollArea className="min-h-24 min-w-12 rounded-md">
+                                                            {answers && answers.map((answer)=>{
+                                                                return(
+                                                                    <SelectItem key={"answers_list_"+answer.id} value={answer.id+""}>{answer.name}</SelectItem>
+                                                                )
+                                                            })
+                                                            }
+                                                        </ScrollArea>
                                                     </SelectContent>
                                                 </Select>
                                             </div>
@@ -202,14 +207,16 @@ function ProblemForm (props: {
                                                         <SelectValue/>
                                                     </SelectTrigger>
                                                     <SelectContent>
-                                                        {employees && employees.map((employee)=>{
-                                                            return(
-                                                                <SelectItem key={"employees_list_"+employee.id} value={employee.id+""}>
-                                                                    {employee.second_name} {employee.first_name} {employee.second_name} ({employee.post})
-                                                                </SelectItem>
-                                                            )
-                                                        })
-                                                        }
+                                                        <ScrollArea className="min-h-24 min-w-12 rounded-md">
+                                                            {employees && employees.map((employee)=>{
+                                                                return(
+                                                                    <SelectItem key={"employees_list_"+employee.id} value={employee.id+""}>
+                                                                        {employee.second_name} {employee.first_name} {employee.second_name} ({employee.post})
+                                                                    </SelectItem>
+                                                                )
+                                                            })
+                                                            }
+                                                        </ScrollArea>
                                                     </SelectContent>
                                                 </Select>
                                             </div>
@@ -231,14 +238,16 @@ function ProblemForm (props: {
                                                         <SelectValue/>
                                                     </SelectTrigger>
                                                     <SelectContent>
-                                                        {specialists && specialists.map((specialist)=>{
-                                                            return(
-                                                                <SelectItem key={"specialists_list_"+specialist.id} value={specialist.id+""}>
-                                                                    {specialist.second_name} {specialist.first_name} {specialist.second_name} ({specialist.profession})
-                                                                </SelectItem>
-                                                            )
-                                                        })
-                                                        }
+                                                        <ScrollArea className="min-h-24 min-w-12 rounded-md">
+                                                            {specialists && specialists.map((specialist)=>{
+                                                                return(
+                                                                    <SelectItem key={"specialists_list_"+specialist.id} value={specialist.id+""}>
+                                                                        {specialist.second_name} {specialist.first_name} {specialist.second_name} ({specialist.profession})
+                                                                    </SelectItem>
+                                                                )
+                                                            })
+                                                            }
+                                                        </ScrollArea>
                                                     </SelectContent>
                                                 </Select>
                                             </div>

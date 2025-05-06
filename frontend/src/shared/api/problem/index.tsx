@@ -45,93 +45,93 @@ export default class ProblemAPI{
     }
 
     static async add(access: string, problem: ProblemType){
-            try{
-                const res = await api.post(`/add`,{
-                    id_theme: problem.id_theme,
-                    id_employee: problem.id_employee > 0 ? problem.id_employee : null,
-                    id_answer: problem.id_answer > 0 ? problem.id_answer : null,
-                    id_specialist: problem.id_specialist > 0 ? problem.id_specialist : null,
-                    name: problem.name,
-                    describe: problem.describe
-                },{
-                    headers: {
-                        Authorization: `Bearer ${access}`,
-                    },
-                });
-                console.log("problem add: ",res.data);
-                if(!res.data.problem)
-                    return null;
-                return {
-                    id: res.data.problem[0].id,
-                    id_theme: res.data.problem[0].id_theme,
-                    id_employee: res.data.problem[0].id_employee,
-                    id_answer: res.data.problem[0].id_answer,
-                    id_specialist: res.data.problem[0].id_specialist,
-                    name: res.data.problem[0].name,
-                    describe: res.data.problem[0].describe
-                } as ProblemType;
-            }catch(err){
-                console.error(err);
+        try{
+            const res = await api.post(`/add`,{
+                id_theme: problem.id_theme,
+                id_employee: problem.id_employee > 0 ? problem.id_employee : null,
+                id_answer: problem.id_answer > 0 ? problem.id_answer : null,
+                id_specialist: problem.id_specialist > 0 ? problem.id_specialist : null,
+                name: problem.name,
+                describe: problem.describe
+            },{
+                headers: {
+                    Authorization: `Bearer ${access}`,
+                },
+            });
+            console.log("problem add: ",res.data);
+            if(!res.data.problem)
                 return null;
-            }
+            return {
+                id: res.data.problem[0].id,
+                id_theme: res.data.problem[0].id_theme,
+                id_employee: res.data.problem[0].id_employee,
+                id_answer: res.data.problem[0].id_answer,
+                id_specialist: res.data.problem[0].id_specialist,
+                name: res.data.problem[0].name,
+                describe: res.data.problem[0].describe
+            } as ProblemType;
+        }catch(err){
+            console.error(err);
+            return null;
         }
-    
-        static async update(access: string, id:number, problem: ProblemType){
-            try{
-                const res = await api.put(`/update`,{
-                    id: id,
-                    id_theme: problem.id_theme,
-                    id_employee: problem.id_employee > 0 ? problem.id_employee : null,
-                    id_answer: problem.id_answer > 0 ? problem.id_answer : null,
-                    id_specialist: problem.id_specialist > 0 ? problem.id_specialist : null,
-                    name: problem.name,
-                    describe: problem.describe
-                },{
-                    headers: {
-                        Authorization: `Bearer ${access}`,
-                    },
-                });
-                console.log("problem update: ",res.data);
-                if(!res.data.problem)
-                    return null;
-                return {
-                    id: res.data.problem[0].id,
-                    id_theme: res.data.problem[0].id_theme,
-                    id_employee: res.data.problem[0].id_employee,
-                    id_answer: res.data.problem[0].id_answer,
-                    id_specialist: res.data.problem[0].id_specialist,
-                    name: res.data.problem[0].name,
-                    describe: res.data.problem[0].describe
-                } as ProblemType;
-            }catch(err){
-                console.error(err);
+    }
+
+    static async update(access: string, id:number, problem: ProblemType){
+        try{
+            const res = await api.put(`/update`,{
+                id: id,
+                id_theme: problem.id_theme,
+                id_employee: problem.id_employee > 0 ? problem.id_employee : null,
+                id_answer: problem.id_answer > 0 ? problem.id_answer : null,
+                id_specialist: problem.id_specialist > 0 ? problem.id_specialist : null,
+                name: problem.name,
+                describe: problem.describe
+            },{
+                headers: {
+                    Authorization: `Bearer ${access}`,
+                },
+            });
+            console.log("problem update: ",res.data);
+            if(!res.data.problem)
                 return null;
-            }
+            return {
+                id: res.data.problem[0].id,
+                id_theme: res.data.problem[0].id_theme,
+                id_employee: res.data.problem[0].id_employee,
+                id_answer: res.data.problem[0].id_answer,
+                id_specialist: res.data.problem[0].id_specialist,
+                name: res.data.problem[0].name,
+                describe: res.data.problem[0].describe
+            } as ProblemType;
+        }catch(err){
+            console.error(err);
+            return null;
         }
-    
-    
-        static async delete(access: string, id: number){
-            try{
-                const res = await api.delete(`/delete?id=${id}`,{
-                    headers: {
-                        Authorization: `Bearer ${access}`,
-                    },
-                });
-                console.log("employe delete: ",res.data);
-                if(!res.data.employee)
-                    return null;
-                return {
-                    id: res.data.problem[0].id,
-                    id_theme: res.data.problem[0].id_theme,
-                    id_employee: res.data.problem[0].id_employee,
-                    id_answer: res.data.problem[0].id_answer,
-                    id_specialist: res.data.problem[0].id_specialist,
-                    name: res.data.problem[0].name,
-                    describe: res.data.problem[0].describe
-                } as ProblemType;
-            }catch(err){
-                console.error(err);
+    }
+
+
+    static async delete(access: string, id: number){
+        try{
+            const res = await api.delete(`/delete?id=${id}`,{
+                headers: {
+                    Authorization: `Bearer ${access}`,
+                },
+            });
+            console.log("problem delete: ",res.data);
+            if(!res.data.problem)
                 return null;
-            }
+            return {
+                id: res.data.problem[0].id,
+                id_theme: res.data.problem[0].id_theme,
+                id_employee: res.data.problem[0].id_employee,
+                id_answer: res.data.problem[0].id_answer,
+                id_specialist: res.data.problem[0].id_specialist,
+                name: res.data.problem[0].name,
+                describe: res.data.problem[0].describe
+            } as ProblemType;
+        }catch(err){
+            console.error(err);
+            return null;
         }
+    }
 }

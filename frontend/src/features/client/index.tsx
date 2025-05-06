@@ -2,6 +2,7 @@ import { Input } from "@/shared/ui/input"
 import { Button } from "@/shared/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/ui/select";
 import { Form, FormControl, FormDescription, FormField, FormLabel, FormItem, FormMessage } from "@/shared/ui/form"
+import { ScrollArea } from "@/shared/ui/scroll-area";
 import { Loader2 } from "lucide-react"
 import { useState, useEffect } from "react"
 
@@ -144,14 +145,16 @@ function ClientForm (props: {
                                                     <SelectValue/>
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    {employees && employees.map((employee)=>{
-                                                        return(
-                                                            <SelectItem key={"employees_list_"+employee.id} value={employee.id.toString()}>
-                                                                {employee.second_name} {employee.first_name} {employee.middle_name} ({employee.post})
-                                                            </SelectItem>
-                                                        )
-                                                    })
-                                                    }
+                                                    <ScrollArea className="min-h-24 min-w-12 rounded-md">
+                                                        {employees && employees.map((employee)=>{
+                                                            return(
+                                                                <SelectItem key={"employees_list_"+employee.id} value={employee.id.toString()}>
+                                                                    {employee.second_name} {employee.first_name} {employee.middle_name} ({employee.post})
+                                                                </SelectItem>
+                                                            )
+                                                        })
+                                                        }
+                                                    </ScrollArea>
                                                 </SelectContent>
                                             </Select>
                                         </div>

@@ -8,49 +8,47 @@ import {
     TableRow,
 } from "@/shared/ui/table";
 import {
-    Pagination,
-    PaginationContent,
-    PaginationItem,
-    PaginationNext,
-    PaginationPrevious,
-  } from "@/shared/ui/pagination";
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/shared/ui/pagination";
 import { useEffect, useState } from "react";
 import {loadList} from "./api";
 
 
 
-function EmployeesList (props: {callback: (id:number)=>Promise<void>, reload: boolean}){
+function ProblemsList (props: {callback: (id:number)=>Promise<void>, reload: boolean}){
 
     const [offset,setOffset] = useState(0);
     const [limit] = useState(10);
     const [list, setList] = useState<Array<any>>([]);
 
     useEffect(()=>{
-        loadList(limit, offset)
-        .then(res => setList(res))
-        .catch(err => {
-            if(err) setList([]);
-        });
-    },[limit, offset, props.reload]);
+          loadList(limit, offset)
+          .then(res => setList(res))
+          .catch(err => {
+              if(err) setList([]);
+          });
+    },[props.reload]);
 
     
     return(
         <>
         <Table>
-          <TableCaption>Список сотрудников</TableCaption>
+          <TableCaption>Список всех проблем</TableCaption>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[100px]">ФИО</TableHead>
-              <TableHead>Должность</TableHead>
-              <TableHead>Почта</TableHead>
+              <TableHead className="w-[100px]">Название</TableHead>
+              <TableHead>Описание</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {list ? list.map((employee) => (
-              <TableRow key={"Employee_list_"+employee.id} onClick={()=>{props.callback(employee.id)}}>
-                <TableCell className="font-medium">{employee.second_name} {employee.first_name} {employee.middle_name}</TableCell>
-                <TableCell>{employee.post}</TableCell>
-                <TableCell>{employee.email}</TableCell>
+            {list && list.length  ? list.map((problem) => (
+              <TableRow key={"my_problems_list_"+problem.id} onClick={()=>{props.callback(problem.id)}}>
+                <TableCell className="font-medium">{problem.name}</TableCell>
+                <TableCell>{problem.describe}</TableCell>
               </TableRow>
             )) :
               <TableRow> 
@@ -75,8 +73,8 @@ function EmployeesList (props: {callback: (id:number)=>Promise<void>, reload: bo
               </PaginationContent>
           </Pagination>
         }
-        </>
+      </>
     );
 }
 
-export default EmployeesList;
+export default ProblemsList;

@@ -42,7 +42,7 @@ function MyProblemsList (props: {callback: (id:number)=>Promise<void>, reload: b
             </TableRow>
           </TableHeader>
           <TableBody>
-            {list ? list.map((problem) => (
+            {list && list.length ? list.map((problem) => (
               <TableRow key={"my_problems_list_"+problem.id_problem} onClick={()=>{props.callback(problem.id_problem)}}>
                 <TableCell className="font-medium">{problem.name}</TableCell>
                 <TableCell>{problem.theme_name}</TableCell>

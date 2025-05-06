@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 
 import MyProblemsList from "@/features/myProblemsList";
+import ProblemsList from "@/features/problemList";
 import ProblemForm, { SubmitProblemType } from "@/features/problem";
 
 import Log from "@/entities/log";
@@ -36,7 +37,7 @@ function Problems(){
         }
         try{
             const newProblem = await ProblemAPI.getById(id);
-            const newCallback = await CallbackAPI.getById(id);;
+            const newCallback = await CallbackAPI.getById(id);
             if(newProblem && newCallback){
                 setDefaultValues({
                     name: newProblem.name,
@@ -115,12 +116,15 @@ function Problems(){
     }
 
     async function onRemove(id:number) {
-        if(!access || !problem || !callback) return;
+        if(!access) return;
         setLoad(true);
         try{
-            const res_callback = await CallbackAPI.delete(access, callback.id);
-            const res_problem = await ProblemAPI.delete(access, id);
-            if(!res_problem || !res_callback)
+            let res_problem = null;
+            if(callback && callback.id > 0)
+                await CallbackAPI.delete(access, callback.id);
+            if(problem && id > 0)
+                res_problem = await ProblemAPI.delete(access, id);
+            if(!res_problem)
                 setLog(true);
             setProblem(null);
             setCallback(null);
@@ -145,16 +149,29 @@ function Problems(){
             <div className="flex flex-col gap-8 my-12">
                 <div className="flex flex-col gap-2">
                     <div className="flex flex-col gap-2 md:flex-row md:justify-between">
-                        <h1 className="text-2xl">Проблема</h1>
+                        <h1 className="text-2xl">Проблемы</h1>
                         <Button onClick={()=>get(-1)} className="w-full md:w-[200px]">Добавить новую проблему</Button>
                     </div>
                     <Separator />
                 </div>
-                {problem &&
-                    <ProblemForm onSubmit={onSubmit} onRemove={onRemove} problem={problem} load={load} defaultValues={defaultValues}/>
+                {problem && 
+                    <>
+                        <ProblemForm onSubmit={onSubmit} onRemove={onRemove} problem={problem} load={load} defaultValues={defaultValues}/>
+                        <Separator />
+                    </>
                 }
             </div>
-            <MyProblemsList callback={get} reload={reload}/>
+            <div className="flex flex-col md:flex-row gap-4">
+                <div className="flex flex-col gap-2 w-full">
+                    <h1 className="text-xl">Мои</h1>
+                    <MyProblemsList callback={get} reload={reload}/>
+                </div>
+                <Separator className="hidden min-h-[200px] md:block" orientation="vertical"/>
+                <div className="flex flex-col gap-2 w-full">
+                    <h1 className="text-xl">Все</h1>
+                    <ProblemsList callback={get} reload={reload} />
+                </div>
+            </div>
             {log &&
                 <Log name="Ошибка применения данных проблемы" message="Возможно вам следует повторить это позже, или загрузить соответстующие данные..." type="error" callback={()=>setLog(false)}/>
             }
