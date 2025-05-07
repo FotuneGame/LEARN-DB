@@ -65,7 +65,7 @@ function SecurityForm (props: {
     return(
         <Form {...form}>
             <form onSubmit={form.handleSubmit(props.onSubmit)} className="space-y-8">
-            <FormField
+                <FormField
                     control={form.control}
                     name="email"
                     render={({ field }) => (

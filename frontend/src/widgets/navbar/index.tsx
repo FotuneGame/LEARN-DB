@@ -49,6 +49,8 @@ function AuthedMenu (props: {user:UserType, post: PostType, exit: ()=>void}){
                     <NavigationMenuLink to={paths.calls}>Звонки</NavigationMenuLink>
                     <NavigationMenuLink to={paths.clients}>Клиенты</NavigationMenuLink>
                     <NavigationMenuLink to={paths.problems}>Проблемы</NavigationMenuLink>
+                    <NavigationMenuLink to={paths.answers}>Ответы</NavigationMenuLink>
+                    <NavigationMenuLink to={paths.specialists}>Спецы</NavigationMenuLink>
                     <NavigationMenuLink to={paths.themes}>Темы</NavigationMenuLink>
                     {props.post === "Админ" && <NavigationMenuLink to={paths.admin}>Админка</NavigationMenuLink>}
 

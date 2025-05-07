@@ -10,6 +10,8 @@ const Calls = React.lazy(() => import("@/pages/calls"));
 const Oauth = React.lazy(() => import("@/pages/oauth"));
 const About = React.lazy(() => import("@/pages/about"));
 const Admin = React.lazy(() => import("@/pages/admin"));
+const Answers = React.lazy(() => import("@/pages/answers"));
+const Specialists = React.lazy(() => import("@/pages/specialists"));
 const Forget = React.lazy(() => import("@/pages/forget"));
 const Clients = React.lazy(() => import("@/pages/clients"));
 const Problems = React.lazy(() => import("@/pages/problems"));
@@ -99,6 +101,16 @@ const routes: RouteObject[] = [
             {
                 path: paths.calls,
                 element: <Calls />,
+                errorElement: <NotFound />
+            },
+            {
+                path: paths.answers,
+                element: <Answers />,
+                errorElement: <NotFound />
+            },
+            {
+                path: paths.specialists,
+                element: <Specialists />,
                 errorElement: <NotFound />
             }
         ]

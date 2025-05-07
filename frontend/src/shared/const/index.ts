@@ -10,6 +10,8 @@ export const paths = {
     calls: "/calls",
     problems: "/problems",
     themes: "/themes",
+    answers: "/answers",
+    specialists: "/specialists",
     registration:  "/registration",
     FAQ: "/faq",
     code:"/code",

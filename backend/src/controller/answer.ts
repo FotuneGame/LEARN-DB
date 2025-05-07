@@ -8,14 +8,14 @@ import HandlerError from "../error";
 //Использовать answer_by_theme и answer
 class Answer{
     async add(req:Request, res:Response,next:NextFunction){
-        const {name, discribe, important} = req.body;
-        if(!name || !discribe || !important)
+        const {name, describe, important} = req.body;
+        if(!name || !describe || !important)
             return next(HandlerError.internal("answer add:","Bad args!"));
 
         try{
             const answer = await dbAnswers.create({
                 name:name,
-                describe: discribe,
+                describe: describe,
                 important: important
             });
             if(!answer)
@@ -73,14 +73,14 @@ class Answer{
     }
 
     async update(req:Request, res:Response,next:NextFunction){
-        const {id, name, discribe, important} = req.body;
-        if(!Number(id) || !name || !discribe || !important)
+        const {id, name, describe, important} = req.body;
+        if(!Number(id) || !name || !describe || !important)
             return next(HandlerError.internal("answer update:","Bad args!"));
 
         try{
             const answer = await dbAnswers.update(Number(id),{
                 name:name,
-                describe: discribe,
+                describe: describe,
                 important: important
             });
             if(!answer)
