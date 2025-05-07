@@ -102,6 +102,19 @@ class EmployeesByThemeTable implements ITable, ICRUD{
             return false;
         }
     }
+
+
+    async deleteAll(id_theme:number){
+        try{
+            const result = await pool.query(`DELETE FROM ${this.name} WHERE id_theme=$1 RETURNING * ;`,
+                [id_theme]
+            );
+            return result.rows;
+        }catch(err){
+            console.log(err);
+            return false;
+        }
+    }
 }
 
 export default new EmployeesByThemeTable();

@@ -6,7 +6,9 @@ const routerClient:Router = express.Router();
 
 
 routerClient.post("/add", wares.tokensWare, wares.employeeWare, controller.client.add);
+routerClient.post("/connection", wares.tokensWare, wares.employeeWare, controller.listProblemsClient.connection);
 routerClient.delete("/delete", wares.tokensWare, wares.employeeWare, controller.client.delete);
+routerClient.get("/problems", controller.listProblemsClient.get);
 routerClient.get("/get", controller.client.get);
 routerClient.get("/list", controller.client.list);
 routerClient.get("/list_all", controller.client.listAll);

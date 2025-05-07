@@ -1,5 +1,4 @@
 import { Request, Response,NextFunction } from "express";
-import dbFindByTheme from "../db/functions/find_by_theme";
 import dbThemes from "../db/tables/themes";
 import HandlerError from "../error";
 
@@ -62,20 +61,6 @@ class Theme{
         }
     }
 
-    //use find_by_theme
-    async findResults(req:Request, res:Response,next:NextFunction){
-        const {id_theme} = req.query;
-        if(!Number(id_theme))
-            return next (HandlerError.badRequest("theme find:","Bad args!"));
-        try{
-            const result = await dbFindByTheme.call(Number(id_theme));
-            if(!result)
-                return next(HandlerError.internal("theme find:","Cannot finds!"));
-            res.json({result:result});
-        }catch(err){
-            return next(HandlerError.internal("theme find:",(err as Error).message));
-        }
-    }
 
     async update(req:Request, res:Response,next:NextFunction){
         const {id, name} = req.body;

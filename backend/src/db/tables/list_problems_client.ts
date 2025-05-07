@@ -103,6 +103,23 @@ class ListProblemsClientTable implements ITable, ICRUD{
         }
     }
 
+    async findAllByIdClient(id_client:number){
+        try{
+            const result = await pool.query(`
+                SELECT p.id, p.name , lpc.is_solve
+                FROM problems p
+                JOIN ${this.name} lpc ON p.id = lpc.id_problem
+                WHERE lpc.id_client = $1;
+                `,
+                [id_client]
+            );
+            return result.rows;
+        }catch(err){
+            console.log(err);
+            return false;
+        }
+    }
+
     async update(id_client:number,id_problem:number,data:IData){
         try{
             const result = await pool.query(`UPDATE ${this.name} SET 
@@ -123,6 +140,18 @@ class ListProblemsClientTable implements ITable, ICRUD{
         try{
             const result = await pool.query(`DELETE FROM ${this.name} WHERE id_client=$1 AND id_problem=$2 RETURNING * ;`,
                 [id_client, id_problem]
+            );
+            return result.rows;
+        }catch(err){
+            console.log(err);
+            return false;
+        }
+    }
+
+    async deleteAll(id_client:number){
+        try{
+            const result = await pool.query(`DELETE FROM ${this.name} WHERE id_client=$1 RETURNING * ;`,
+                [id_client]
             );
             return result.rows;
         }catch(err){
