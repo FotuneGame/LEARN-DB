@@ -11,7 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { EmployeeType, ProblemType, ThemeType, AnswerType, SpecialistType } from "@/types";
-import {listOfTheme , listOfAnswerByTheme, listOfEmployeeByTheme, listOfSpecialistByTheme} from "./api";
+import {listOfTheme , listOfFinds} from "./api";
 
 
 export type SubmitProblemType = z.infer<typeof formSchema>;
@@ -91,9 +91,13 @@ function ProblemForm (props: {
     
     useEffect(()=>{
         if(Number(formValues.id_theme)>0){
-            listOfAnswerByTheme(Number(formValues.id_theme)).then(res=>setAnswers(res));
-            listOfEmployeeByTheme(Number(formValues.id_theme)).then(res=>setEmployees(res));
-            listOfSpecialistByTheme(Number(formValues.id_theme)).then(res=>setSpecialists(res));
+            listOfFinds(Number(formValues.id_theme)).then(result=>{
+                if(result){
+                    setAnswers(result.answers);
+                    setEmployees(result.employees);
+                    setSpecialists(result.specialists)
+                }
+            })
         }
     },[formValues.id_theme])
   
@@ -170,18 +174,18 @@ function ProblemForm (props: {
                                 name="id_answer"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Ответ</FormLabel>
+                                        <FormLabel className={themes && themes.length > 0 ? (!answers?.length ? "text-gray-400" : "") : ""}>Ответ</FormLabel>
                                         <FormControl>
                                             <div className="flex justify-between gap-2">
-                                                <Select onValueChange={field.onChange} value={field.value} disabled={themes && themes.length > 0 ? false : true}>
+                                                <Select onValueChange={field.onChange} value={field.value} disabled={themes && themes.length > 0 ? (!answers?.length) : true}>
                                                     <SelectTrigger className="w-full">
                                                         <SelectValue/>
                                                     </SelectTrigger>
                                                     <SelectContent>
                                                         <ScrollArea className="min-h-24 min-w-12 rounded-md">
-                                                            {answers && answers.map((answer)=>{
+                                                            {answers && answers.map((answer:any)=>{
                                                                 return(
-                                                                    <SelectItem key={"answers_list_"+answer.id} value={answer.id+""}>{answer.name}</SelectItem>
+                                                                    <SelectItem key={"answers_list_"+answer.id_answer} value={answer.id_answer+""}>{answer.answer_name}</SelectItem>
                                                                 )
                                                             })
                                                             }
@@ -199,18 +203,18 @@ function ProblemForm (props: {
                                 name="id_employee"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Сотрудник</FormLabel>
+                                        <FormLabel className={themes && themes.length > 0 ? (!employees?.length ? "text-gray-400" : "") : ""}>Сотрудник</FormLabel>
                                         <FormControl>
                                             <div className="flex justify-between gap-2">
-                                                <Select onValueChange={field.onChange} value={field.value} disabled={themes && themes.length > 0 ? false : true}>
+                                                <Select onValueChange={field.onChange} value={field.value} disabled={themes && themes.length > 0 ? (!employees?.length) : true}>
                                                     <SelectTrigger className="w-full">
                                                         <SelectValue/>
                                                     </SelectTrigger>
                                                     <SelectContent>
                                                         <ScrollArea className="min-h-24 min-w-12 rounded-md">
-                                                            {employees && employees.map((employee)=>{
+                                                            {employees && employees.map((employee:any)=>{
                                                                 return(
-                                                                    <SelectItem key={"employees_list_"+employee.id} value={employee.id+""}>
+                                                                    <SelectItem key={"employees_list_"+employee.id_employee} value={employee.id_employee+""}>
                                                                         {employee.second_name} {employee.first_name} {employee.second_name} ({employee.post})
                                                                     </SelectItem>
                                                                 )
@@ -230,18 +234,18 @@ function ProblemForm (props: {
                                 name="id_specialist"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Специалист</FormLabel>
+                                        <FormLabel className={themes && themes.length > 0 ? (!specialists?.length ? "text-gray-400" : "") : ""}>Специалист</FormLabel>
                                         <FormControl>
                                             <div className="flex justify-between gap-2">
-                                                <Select onValueChange={field.onChange} value={field.value} disabled={themes && themes.length > 0 ? false : true}>
+                                                <Select onValueChange={field.onChange} value={field.value} disabled={themes && themes.length > 0 ? (!specialists?.length) : true}>
                                                     <SelectTrigger className="w-full">
                                                         <SelectValue/>
                                                     </SelectTrigger>
                                                     <SelectContent>
                                                         <ScrollArea className="min-h-24 min-w-12 rounded-md">
-                                                            {specialists && specialists.map((specialist)=>{
+                                                            {specialists && specialists.map((specialist:any)=>{
                                                                 return(
-                                                                    <SelectItem key={"specialists_list_"+specialist.id} value={specialist.id+""}>
+                                                                    <SelectItem key={"specialists_list_"+specialist.id_specialist} value={specialist.id_specialist+""}>
                                                                         {specialist.second_name} {specialist.first_name} {specialist.second_name} ({specialist.profession})
                                                                     </SelectItem>
                                                                 )

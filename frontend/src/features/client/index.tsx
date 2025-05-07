@@ -81,57 +81,58 @@ function ClientForm (props: {
 
     return(
          <Form {...form}>
-            <form onSubmit={form.handleSubmit(props.onSubmit)} className="flex flex-col items-center md:justify-between md:flex-row gap-4 space-y-8">
-                <div className="flex flex-col md:flex-row gap-12">
-                <FormField
-                            control={form.control}
-                            name="first_name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Имя</FormLabel>
-                                    <FormControl>
-                                        <div className="flex justify-between gap-2">
-                                            <Input placeholder="Иван" {...field} />
-                                        </div>
-                                    </FormControl>
-                                    <FormDescription>Имя персоны по паспорту</FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+            <form onSubmit={form.handleSubmit(props.onSubmit)} className="flex flex-col items-center md:items-end md:justify-between md:flex-row gap-4 space-y-8">
+                <div className="flex flex-col gap-12">
+                    <div className="flex flex-col w-full md:flex-row gap-4">
                         <FormField
-                            control={form.control}
-                            name="second_name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Фамилия</FormLabel>
-                                    <FormControl>
-                                        <div className="flex justify-between gap-2">
-                                            <Input placeholder="Иванов" {...field} />
-                                        </div>
-                                    </FormControl>
-                                    <FormDescription>Фамилия персоны по паспорту</FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="middle_name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Отчество</FormLabel>
-                                    <FormControl>
-                                        <div className="flex justify-between gap-2">
-                                            <Input placeholder="Иванович" {...field} />
-                                        </div>
-                                    </FormControl>
-                                    <FormDescription>Отчество персоны по паспорту</FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
+                                control={form.control}
+                                name="first_name"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Имя</FormLabel>
+                                        <FormControl>
+                                            <div className="flex justify-between gap-2">
+                                                <Input placeholder="Иван" {...field} />
+                                            </div>
+                                        </FormControl>
+                                        <FormDescription>Имя персоны по паспорту</FormDescription>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="second_name"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Фамилия</FormLabel>
+                                        <FormControl>
+                                            <div className="flex justify-between gap-2">
+                                                <Input placeholder="Иванов" {...field} />
+                                            </div>
+                                        </FormControl>
+                                        <FormDescription>Фамилия персоны по паспорту</FormDescription>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="middle_name"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Отчество</FormLabel>
+                                        <FormControl>
+                                            <div className="flex justify-between gap-2">
+                                                <Input placeholder="Иванович" {...field} />
+                                            </div>
+                                        </FormControl>
+                                        <FormDescription>Отчество персоны по паспорту</FormDescription>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
                         <FormField
                             control={form.control}
                             name="id_employee"

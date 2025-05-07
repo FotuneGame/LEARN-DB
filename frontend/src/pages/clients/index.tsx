@@ -11,6 +11,7 @@ import { RootState } from "@/shared/store";
 
 import Log from "@/entities/log";
 import ClientAPI from "@/shared/api/client";
+import ClientProblmsForm, { SubmitClientProblemsType } from "@/features/clientProblems";
 
 
 
@@ -49,7 +50,7 @@ function Clients(){
                 setDefaultValues({ 
                     first_name: newClient.first_name,
                     second_name: newClient.second_name,
-                    middle_name: newClient.second_name,
+                    middle_name: newClient.middle_name,
                     id_employee: newClient.id_employee.toString()
                 });
             }else{
@@ -103,6 +104,29 @@ function Clients(){
         }
     }
 
+    async function onSubmitCP(values:SubmitClientProblemsType) {
+        console.log(values)
+        if(!access || !client) return;
+        setLoad(true);
+        try{
+            let newCP = null;
+            if(client.id > 0){
+                newCP = await ClientAPI.connection(access, {
+                    id_client: client.id,
+                    arr_problems: values.arr_problems,
+                });
+            }
+            if(!newCP)
+                setLog(true);
+            setClient(null);
+            setReload(!reload);
+        }catch(err){
+            setLog(true);
+        }finally{
+            setLoad(false);
+        }
+    }
+
     async function onRemove(id:number) {
         if(!access) return;
         setLoad(true);
@@ -124,7 +148,6 @@ function Clients(){
             })
         }
     }
-
     
     if(!access || !employee.id)
         return(
@@ -143,7 +166,15 @@ function Clients(){
                     <Separator />
                 </div>
                 {client &&
-                    <ClientForm onSubmit={onSubmit} onRemove={onRemove} client={client} load={load} defaultValues={defaultValues}/>
+                    <>
+                        <ClientForm onSubmit={onSubmit} onRemove={onRemove} client={client} load={load} defaultValues={defaultValues}/>
+                        {client.id > 0 && 
+                            <>
+                                <Separator className="my-6"/>
+                                <ClientProblmsForm onSubmit={onSubmitCP}  client={client} load={load}/>
+                            </>
+                        }
+                    </>
                 }
             </div>
             <ClientsList callback={get} reload={reload}/>

@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import ThemesList from "@/features/themesList";
 import ThemeForm, { SubmitThemeType } from "@/features/theme";
+import ThemeAESForm, { SubmitThemeAESType } from "@/features/themeAES";
 import { ThemeType } from "@/types";
 import ThemeAPI from "@/shared/api/theme";
 
@@ -20,9 +21,8 @@ function Themes(){
     const employee = useSelector((state:RootState)=>state.employee);
     const access = useSelector((state:RootState)=>state.user.accessToken);
     const [theme,setTheme] = useState<ThemeType | null>(null);
-    const [defaultValues,setDefaultValues] = useState<SubmitThemeType>({
-        name: "",
-    });
+    const [defaultValues,setDefaultValues] = useState<SubmitThemeType>({ name: "" });
+
 
     const [load,setLoad] = useState<boolean>(false);
     const [log,setLog] = useState<boolean>(false);
@@ -73,7 +73,31 @@ function Themes(){
             setLog(true);
         }finally{
             setLoad(false);
-            setDefaultValues({name: ""})
+            setDefaultValues({name: ""});
+        }
+    }
+
+    async function onSubmitAES(value:SubmitThemeAESType) {
+        if(!access || !theme) return;
+        setLoad(true);
+        try{
+            let newThemeAES = null;
+            if(theme.id > 0){
+                newThemeAES = await ThemeAPI.connection(access, {
+                    id_theme: theme.id,
+                    arr_answers: value.arr_answers,
+                    arr_employee: value.arr_employees,
+                    arr_specialist: value.arr_specialists
+                });
+            }
+            if(!newThemeAES)
+                setLog(true);
+            setTheme(null);
+            setReload(!reload);
+        }catch(err){
+            setLog(true);
+        }finally{
+            setLoad(false);
         }
     }
 
@@ -112,7 +136,16 @@ function Themes(){
                     <Separator />
                 </div>
                 {theme &&
-                    <ThemeForm onSubmit={onSubmit} onRemove={onRemove} theme={theme} load={load} defaultValues={defaultValues}/>
+                    <>
+                        <ThemeForm onSubmit={onSubmit} onRemove={onRemove} theme={theme} load={load} defaultValues={defaultValues}/>
+                        {theme.id > 0 &&
+                            <>
+                                <Separator />
+                                <h1 className="text-2xl">Связи</h1>
+                                <ThemeAESForm onSubmit={onSubmitAES} theme={theme} load={load}/>
+                            </>
+                        }
+                    </>
                 }
             </div>
             <ThemesList callback={get} reload={reload}/>

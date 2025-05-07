@@ -73,6 +73,18 @@ class Specialist{
         }
     }
 
+
+    async listAll(req:Request, res:Response,next:NextFunction){
+        try{
+            const list = await dbSpecialists.readAll(true, 1, 0);
+            if(!list)
+                return next(HandlerError.internal("specialist list all:","Cannot get list of specialists!"));
+            res.json({list:list});
+        }catch(err){
+            return next(HandlerError.internal("specialist list all:",(err as Error).message));
+        }
+    }
+
     async update(req:Request, res:Response,next:NextFunction){
         const {id, first_name, middle_name, second_name, phone, email, adress, profession} = req.body;
         if(!Number(id) || !first_name || !middle_name || !second_name || !phone || !email || !adress || !profession)

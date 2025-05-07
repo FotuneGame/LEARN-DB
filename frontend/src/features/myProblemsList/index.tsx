@@ -34,6 +34,7 @@ function MyProblemsList (props: {callback: (id:number)=>Promise<void>, reload: b
           <TableCaption>Список проблем моих клиентов</TableCaption>
           <TableHeader>
             <TableRow>
+              <TableHead className="w-[100px]">ФИО</TableHead>
               <TableHead className="w-[100px]">Название</TableHead>
               <TableHead>Тема</TableHead>
               <TableHead>Описание</TableHead>
@@ -42,18 +43,23 @@ function MyProblemsList (props: {callback: (id:number)=>Promise<void>, reload: b
             </TableRow>
           </TableHeader>
           <TableBody>
-            {list && list.length ? list.map((problem) => (
-              <TableRow key={"my_problems_list_"+problem.id_problem} onClick={()=>{props.callback(problem.id_problem)}}>
-                <TableCell className="font-medium">{problem.name}</TableCell>
-                <TableCell>{problem.theme_name}</TableCell>
-                <TableCell>{problem.description}</TableCell>
-                <TableCell>{problem.is_solve ? "Да" : "Нет"}</TableCell>
-                <TableCell>{problem.solution ? 
-                (problem.solution.id_answer ? "Ответ" : (
-                problem.solution.id_employee ? "Сотрудником" : "Специалистом"
-                ))
-                : "Нет"}</TableCell>
-              </TableRow>
+            {list && list.length ? list.map((client) => (
+              client.problems.map((problem:any)=>{
+                return(
+                  <TableRow key={"my_problems_list_"+problem.id_problem} onClick={()=>{props.callback(problem.id_problem)}}>
+                    <TableCell className="font-medium">{client.second_name} {client.first_name} {client.middle_name}</TableCell>
+                    <TableCell className="font-medium">{problem.name}</TableCell>
+                    <TableCell>{problem.theme_name}</TableCell>
+                    <TableCell>{problem.description}</TableCell>
+                    <TableCell>{problem.is_solve ? "Да" : "Нет"}</TableCell>
+                    <TableCell>{problem.solution ? 
+                    (problem.solution.id_answer ? "Ответ" : (
+                    problem.solution.id_employee ? "Сотрудником" : "Специалистом"
+                    ))
+                    : "Нет"}</TableCell>
+                  </TableRow>
+                )
+              })
             )) :
               <TableRow> 
                 <TableCell>Пусто</TableCell>

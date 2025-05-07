@@ -10,9 +10,9 @@ class ThemeAES{
 
     /*
     id_theme: number
-    arr_answers: Array<{id:number, ...}>
-    arr_employee: Array<{id:number, ...}>
-    arr_specialist: Array<{id:number, ...}>
+    arr_answers: Array<{id_answer:number, ...}>
+    arr_employee: Array<{id_employee:number, ...}>
+    arr_specialist: Array<{id_specialist:number, ...}>
     */
     async connection(req:Request, res:Response,next:NextFunction){
         const {id_theme, arr_answers, arr_employee, arr_specialist} = req.body;
@@ -25,7 +25,7 @@ class ThemeAES{
             for (let i in arr_answers){
                 const answers = await dbAnswersByTheme.create({
                     id_theme: Number(id_theme),
-                    id_answer: Number(arr_answers[i].id)
+                    id_answer: Number(arr_answers[i].id_answer)
                 })
                 if(!answers)
                     return next(HandlerError.internal("themeAES add arr_answers:","Cannot add arr_answers!"));
@@ -37,7 +37,7 @@ class ThemeAES{
             for (let i in arr_employee){
                 const employee = await dbEmployeesByTheme.create({
                     id_theme: Number(id_theme),
-                    id_employee: Number(arr_employee[i].id)
+                    id_employee: Number(arr_employee[i].id_employee)
                 })
                 if(!employee)
                     return next(HandlerError.internal("themeAES add arr_employee:","Cannot add arr_employee!"));
@@ -50,7 +50,7 @@ class ThemeAES{
             for (let i in arr_specialist){
                 const specialist = await dbSpecialistsByTheme.create({
                     id_theme: Number(id_theme),
-                    id_specialist: Number(arr_specialist[i].id)
+                    id_specialist: Number(arr_specialist[i].id_specialist)
                 })
                 if(!specialist)
                     return next(HandlerError.internal("themeAES add arr_specialist:","Cannot add arr_specialist!"));

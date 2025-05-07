@@ -37,6 +37,19 @@ export default class SpecialistAPI{
     }
 
 
+    static async getListAll(){
+        try{
+            const res = await api.get(`/list_all`);
+            console.log("list of all specialists: ",res.data);
+            if(!res.data.list)
+                return null;
+            return res.data.list;
+        }catch(err){
+            console.error(err);
+            return null;
+        }
+    }
+
 
      static async getById(id: number){
         try{

@@ -53,6 +53,50 @@ export default class ThemeAPI{
         }
     }
 
+    static async find(id_theme: number){
+        try{
+            const res = await api.get(`/find?id_theme=${id_theme}`);
+            console.log("find by theme: ",res.data);
+            if(!res.data.answers && !res.data.employees && !res.data.specialists)
+                return null;
+            return {
+                answers: res.data.answers,
+                employees: res.data.employees,
+                specialists: res.data.specialists
+            };
+        }catch(err){
+            console.error(err);
+            return null;
+        }
+    }
+
+    static async connection(access: string, data: {id_theme:number, arr_answers:Array<any>, arr_employee:Array<any>, arr_specialist:Array<any>}){
+        try{
+            const res = await api.post(`/connection`,{
+                id_theme: data.id_theme,
+                arr_answers: data.arr_answers,
+                arr_employee: data.arr_employee,
+                arr_specialist: data.arr_specialist
+            },{
+                headers: {
+                    Authorization: `Bearer ${access}`,
+                },
+            });
+            console.log("theme connection: ",res.data);
+            if(!res.data.id_theme)
+                return null;
+            return {
+                id_theme: res.data.id_theme,
+                arr_answers: res.data.arr_answers,
+                arr_employee: res.data.arr_employee,
+                arr_specialist: res.data.arr_specialist,
+            };
+        }catch(err){
+            console.error(err);
+            return null;
+        }
+    }
+
     static async add(access: string, theme: ThemeType){
         try{
             const res = await api.post(`/add`,{

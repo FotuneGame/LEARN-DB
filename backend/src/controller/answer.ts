@@ -72,6 +72,17 @@ class Answer{
         }
     }
 
+    async listAll(req:Request, res:Response,next:NextFunction){
+        try{
+            const list = await dbAnswers.readAll(true, 1, 0);
+            if(!list)
+                return next(HandlerError.internal("answer list all:","Cannot get list of answers!"));
+            res.json({list:list});
+        }catch(err){
+            return next(HandlerError.internal("answer list all:",(err as Error).message));
+        }
+    }
+
     async update(req:Request, res:Response,next:NextFunction){
         const {id, name, describe, important} = req.body;
         if(!Number(id) || !name || !describe || !important)

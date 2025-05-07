@@ -136,6 +136,20 @@ class ListProblemsClientTable implements ITable, ICRUD{
         }
     }
 
+    async updateSolve(id_problem:number,is_solve:boolean){
+        try{
+            const result = await pool.query(`UPDATE ${this.name} SET 
+                is_solve=$1
+                WHERE id_problem=$2 RETURNING * ;`,
+                [is_solve, id_problem]
+            );
+            return result.rows;
+        }catch(err){
+            console.log(err);
+            return false;
+        }
+    }
+
     async delete(id_client:number,id_problem:number){
         try{
             const result = await pool.query(`DELETE FROM ${this.name} WHERE id_client=$1 AND id_problem=$2 RETURNING * ;`,

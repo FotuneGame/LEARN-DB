@@ -40,6 +40,20 @@ export default class AnswerAPI{
     }
 
 
+    static async getListAll(){
+        try{
+            const res = await api.get(`/list_all`);
+            console.log("list of all answer: ",res.data);
+            if(!res.data.list)
+                return null;
+            return res.data.list;
+        }catch(err){
+            console.error(err);
+            return null;
+        }
+    }
+
+
      static async getById(id: number){
         try{
             const res = await api.get(`/get?id=${id}`);

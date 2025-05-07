@@ -10,6 +10,19 @@ const api = axios.create({
 
 
 export default class ProblemAPI{
+    static async getListAll(){
+        try{
+            const res = await api.get(`/list_all`);
+            console.log("list of all problems: ",res.data);
+            if(!res.data.list)
+                return null;
+            return res.data.list;
+        }catch(err){
+            console.error(err);
+            return null;
+        }
+    }
+
     static async getList(limit: number, offset:number){
         try{
             const res = await api.get(`/list?offset=${offset}&limit=${limit}`);

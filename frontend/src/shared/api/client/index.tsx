@@ -36,6 +36,19 @@ export default class ClientAPI{
         }
     }
 
+    static async getProblems(id_client:number){
+        try{
+            const res = await api.get(`/problems?id_client=${id_client}`);
+            console.log("list of problems client: ",res.data);
+            if(!res.data.problems)
+                return null;
+            return res.data.problems;
+        }catch(err){
+            console.error(err);
+            return null;
+        }
+    }
+
 
     static async getById(id: number){
         try{
@@ -50,6 +63,29 @@ export default class ClientAPI{
                 middle_name: res.data.client[0].middle_name,
                 id_employee: res.data.client[0].id_employee
             } as ClientType;
+        }catch(err){
+            console.error(err);
+            return null;
+        }
+    }
+
+    static async connection(access: string, data: {id_client:number, arr_problems:Array<any>}){
+        try{
+            const res = await api.post(`/connection`,{
+                id_client: data.id_client,
+                arr_problems: data.arr_problems
+            },{
+                headers: {
+                    Authorization: `Bearer ${access}`,
+                },
+            });
+            console.log("client problem connection: ",res.data);
+            if(!res.data.id_client)
+                return null;
+            return {
+                id_client: res.data.id_client,
+                arr_problems: res.data.arr_problems
+            };
         }catch(err){
             console.error(err);
             return null;

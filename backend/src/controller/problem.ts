@@ -1,4 +1,5 @@
 import { Request, Response,NextFunction } from "express";
+import dbListProblemsClient from "../db/tables/list_problems_client";
 import dbProblems from "../db/tables/problems";
 import HandlerError from "../error";
 
@@ -21,7 +22,13 @@ class Problem{
             });
             if(!problem)
                 return next(HandlerError.internal("problems add:","Cannot add problem"));
-            res.json({problem: problem});
+
+            let is_solve = false;
+            if(problem[0].id_answer || problem[0].id_employee || problem[0].id_specialist)
+                is_solve = true;
+            const changeSolve = await dbListProblemsClient.updateSolve(Number(problem[0].id),is_solve);
+
+            res.json({problem: problem, is_solve:is_solve});
         }catch(err){
             return next(HandlerError.internal("problems add:",(err as Error).message));
         }
@@ -56,6 +63,18 @@ class Problem{
         }
     }
 
+    async listAll(req:Request, res:Response,next:NextFunction){
+        try{
+            const list = await dbProblems.readAll(true, 1, 0);
+            if(!list)
+                return next(HandlerError.internal("problem list all:","Cannot get list of problems!"));
+            res.json({list:list});
+        }catch(err){
+            return next(HandlerError.internal("problem list all:",(err as Error).message));
+        }
+    }
+
+
     async update(req:Request, res:Response,next:NextFunction){
         const {id, id_theme, id_employee, id_answer, id_specialist, name, describe} = req.body;
         if(!Number(id) || !Number(id_theme) || !name || !describe)
@@ -72,7 +91,13 @@ class Problem{
             });
             if(!problem)
                 return next(HandlerError.internal("problems update:","Cannot update problem with id: "+id));
-            res.json({problem: problem});
+
+            let is_solve = false;
+            if(problem[0].id_answer || problem[0].id_employee || problem[0].id_specialist)
+                is_solve = true;
+            const changeSolve = await dbListProblemsClient.updateSolve(Number(problem[0].id),is_solve);
+
+            res.json({problem: problem, is_solve: is_solve});
         }catch(err){
             return next(HandlerError.internal("problems update:",(err as Error).message));
         }

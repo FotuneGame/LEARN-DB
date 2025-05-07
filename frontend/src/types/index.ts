@@ -62,6 +62,12 @@ export type ThemeType ={
     name: string
 }
 
+export type ClientProblemType ={
+    id:number, 
+    name:string, 
+    is_solve:boolean
+}
+
 export type ClientType = {
     id: number,
     id_employee: number,
