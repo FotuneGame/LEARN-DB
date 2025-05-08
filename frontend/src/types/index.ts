@@ -1,4 +1,5 @@
 
+
 export type UserType = {
     id: number,
     first_name: string,
@@ -20,6 +21,8 @@ export type EmployeeType = {
     first_name?: string,
     second_name?: string,
     middle_name?: string,
+    email?: string,
+    phone?: string
 }
 
 export type SpecialistType = {

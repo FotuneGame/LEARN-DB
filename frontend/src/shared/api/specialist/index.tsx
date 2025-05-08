@@ -10,6 +10,20 @@ const api = axios.create({
 
 
 export default class SpecialistAPI{
+
+    static async getStatistics(){
+        try{
+            const res = await api.get(`/statistics`);
+            console.log("statistics of all specialists: ",res.data);
+            if(!res.data.statistics)
+                return null;
+            return res.data.statistics;
+        }catch(err){
+            console.error(err);
+            return null;
+        }
+    }
+
     static async getListByTheme(id_theme:number){
         try{
             const res = await api.get(`/list_by_theme?id_theme=${id_theme}`);

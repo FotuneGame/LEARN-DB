@@ -160,7 +160,7 @@ class Employee{
     async login(req:Request, res:Response,next:NextFunction){
         const {email} = req.body;
         const {first_name, second_name, middle_name, phone} = req.body;
-        console.log("Wtf?")
+
         if(!email)
             return next(HandlerError.badRequest("employee login:","Have not email!"));
         if(!first_name || !second_name || !middle_name)

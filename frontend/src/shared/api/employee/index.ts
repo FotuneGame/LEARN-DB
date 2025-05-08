@@ -10,6 +10,21 @@ const api = axios.create({
 
 
 export default class EmployeeAPI{
+
+    static async getStatistics(){
+        try{
+            const res = await api.get(`/statistics`);
+            console.log("statistics of all employees: ",res.data);
+            if(!res.data.statistics)
+                return null;
+            return res.data.statistics;
+        }catch(err){
+            console.error(err);
+            return null;
+        }
+    }
+
+    
     static async login(user:UserType){
         try{
             console.log(user)

@@ -10,6 +10,20 @@ const api = axios.create({
 
 
 export default class ThemeAPI{
+
+    static async getStatistics(){
+        try{
+            const res = await api.get(`/statistics`);
+            console.log("statistics of all themes: ",res.data);
+            if(!res.data.statistics)
+                return null;
+            return res.data.statistics;
+        }catch(err){
+            console.error(err);
+            return null;
+        }
+    }
+
     static async getListAll(){
         try{
             const res = await api.get(`/list_all`);

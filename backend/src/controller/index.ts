@@ -9,6 +9,8 @@ import client from "./client";
 import theme from "./theme";
 import call from "./call";
 
+import other from "./other";
+
 
 
 export const controller = {
@@ -21,5 +23,6 @@ export const controller = {
     answer,
     client,
     theme,
-    call
+    call,
+    other
 }

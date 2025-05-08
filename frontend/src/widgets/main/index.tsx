@@ -12,7 +12,7 @@ interface MainScreenProps extends React.HTMLAttributes<HTMLElement> {
 
 function MainWidget({ children, img, ...props }: MainScreenProps) {
   return (
-    <Screen {...props} className={"min-h-[400px] flex gap-4 relative overflow-hidden rounded-xl "+props.className}>
+    <Screen {...props} className={"min-h-[400px] flex gap-4 relative overflow-hidden rounded-xl w-full "+props.className}>
       <div className="w-full bg-black relative">
         <img 
           className="absolute inset-0 w-full h-full object-cover brightness-75" 

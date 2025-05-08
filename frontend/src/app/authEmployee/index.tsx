@@ -1,6 +1,7 @@
 import { ReactElement, useEffect } from 'react';
 import EmployeeAPI from '@/shared/api/employee';
 import {actions as acionsEmployee} from "@/shared/store/slice/employee";
+import {actions as acionsUser} from "@/shared/store/slice/user";
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/shared/store';
 
@@ -15,7 +16,11 @@ function AuthEmployee(props:{children: ReactElement}){
         try{
             if(user.accessToken){
                 const employee = await EmployeeAPI.login(user);
-                if(!employee) return;
+                if(!employee){
+                    dispatch(acionsUser.setDefault());
+                    dispatch(acionsEmployee.setDefault());
+                    return;
+                }
                 dispatch(acionsEmployee.setEmployee(employee));
             }
         }catch(err){

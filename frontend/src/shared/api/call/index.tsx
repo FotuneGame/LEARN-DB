@@ -9,7 +9,7 @@ const api = axios.create({
 })
 
 
-export default class ThemeAPI{
+export default class CallAPI{
     static async getList(limit: number, offset:number){
         try{
             const res = await api.get(`/list?offset=${offset}&limit=${limit}`);

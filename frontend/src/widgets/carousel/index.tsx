@@ -14,7 +14,7 @@ interface CarouselWidgetProps extends React.HTMLAttributes<HTMLElement> {
 function CarouselWidget({ children, name, ...props }: CarouselWidgetProps){
     
     return(
-        <Screen {...props} className={"flex flex-col gap-8 justify-center relative overflow-hidden rounded-xl px-[50px] "+props.className}>
+        <Screen {...props} className={"flex flex-col gap-8 justify-center relative rounded-xl "+props.className}>
 
             <div className="flex flex-col gap-2">
                 <h3 className="text-3xl">{name}</h3>
@@ -30,10 +30,9 @@ function CarouselWidget({ children, name, ...props }: CarouselWidgetProps){
                     </CarouselItem>
                     )) : children )}
                 </CarouselContent>
-                <CarouselPrevious />
+                <CarouselPrevious/>
                 <CarouselNext />
             </Carousel>
-            <Separator />
         </Screen>
     )
 }
