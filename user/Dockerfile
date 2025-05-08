@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:20.17.0
 
 # Метаданные
 LABEL version="1.0"
