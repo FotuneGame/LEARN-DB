@@ -1,7 +1,8 @@
 import { UserType, EmployeeType, PostType } from "@/types";
 import axios from "axios";
+import {BASE_URL} from "@/shared/const";
 
-const urlUserAPI = "https://localhost/api/v1/backend/employee"
+const urlUserAPI = BASE_URL+"/api/v1/backend/employee"
 
 const api = axios.create({
     withCredentials: true,

@@ -18,6 +18,7 @@ import Log from "@/entities/log";
 
 function Admin(){
 
+    const admin = useSelector((state:RootState)=>state.employee);
     const access = useSelector((state:RootState)=>state.user.accessToken);
     const [employee,setEmployee] = useState<EmployeeType | null>(null);
     const [defaultValues,setDefaultValues] = useState<SubmitEmployeeType>({
@@ -105,7 +106,13 @@ function Admin(){
     }
 
     
-
+        
+    if(!access || !admin.id || admin.post!=="Админ")
+        return(
+            <div className="flex justify-center items-center min-h-[90vh]">
+                <h1 className="text-2xl">Прежде чем приступить, подождите пока администратор привяжет вас к системе...</h1>
+            </div>
+        )
     return(
         <div className="flex flex-col  gap-4 mt-8">
             <div className="flex flex-col gap-4 my-12">

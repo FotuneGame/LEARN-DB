@@ -1,8 +1,9 @@
 import { AuthStoryType, RegistrationStoryType, ForgetStoryType, UserType, SecurityStoryType, CodeType } from "@/types";
 import axios from "axios";
+import {BASE_URL} from "@/shared/const";
 
-const urlUserAPI = "https://localhost/api/v1/user"
-export const urlUserAvatars = "https://localhost/api/v1/user/static"
+const urlUserAPI = BASE_URL+"/api/v1/user";
+export const urlUserAvatars = BASE_URL+"/api/v1/user/static";
 
 const api = axios.create({
     withCredentials: true,

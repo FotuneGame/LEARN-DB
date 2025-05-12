@@ -18,3 +18,6 @@ export const paths = {
     oauth: "/oauth",
     main:  "/",
 }
+
+export const BASE_URL = "https://188-127-254-63.nip.io";
+//export const BASE_URL = "https://localhost";

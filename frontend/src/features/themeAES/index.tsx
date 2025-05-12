@@ -3,7 +3,6 @@ import { Form, FormControl, FormDescription, FormField, FormLabel, FormItem, For
 import { Loader2 } from "lucide-react"
 import React, { useState, useLayoutEffect } from "react"
 
-import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import {ThemeType, EmployeeType, AnswerType, SpecialistType, PostType  } from "@/types";
@@ -53,7 +52,6 @@ function ThemeAESForm (props: {
 }){
 
     const form = useForm<SubmitThemeAESType>({
-        resolver: zodResolver(formSchema),
         defaultValues: {
             arr_employees: [],
             arr_answers: [],
@@ -165,10 +163,15 @@ function ThemeAESForm (props: {
                 const answers_res = [];
                 const answers = await listOfAnswers();
                 for(let i in answers){
+                    let have = false;
                     for(let j in find?.answers){
-                        if((find?.answers[j] as any).id_answer!==answers[i].id)
-                            answers_res.push(answers[i]);
+                        if((find?.answers[j] as any).id_answer===answers[i].id){
+                            have = true;
+                            break;
+                        }
                     }
+                    if(!have)
+                        answers_res.push(answers[i]);
                 }
                 if(!find?.answers.length) setAnswers(answers);
                 else setAnswers(answers_res);
@@ -177,10 +180,15 @@ function ThemeAESForm (props: {
                 const employees_res = [];
                 const employees = await listOfEmployees();
                 for(let i in employees){
+                    let have = false;
                     for(let j in find?.employees){
-                        if((find?.employees[j] as any).id_employee!==employees[i].id)
-                            employees_res.push(employees[i]);
+                        if((find?.employees[j] as any).id_employee===employees[i].id){
+                            have = true;
+                            break;
+                        }
                     }
+                    if(!have)
+                        employees_res.push(employees[i]);
                 }
                 if(!find?.employees.length) setEmployees(employees);
                 else setEmployees(employees_res);
@@ -189,10 +197,15 @@ function ThemeAESForm (props: {
                 const specialists_res = [];
                 const specialists = await listOfSpecialists();
                 for(let i in specialists){
+                    let have = false;
                     for(let j in find?.specialists){
-                        if((find?.specialists[j] as any).id_specialist!==specialists[i].id)
-                            specialists_res.push(employees[i]);
+                        if((find?.specialists[j] as any).id_specialist===specialists[i].id){
+                            have = true;
+                            break;
+                        }
                     }
+                    if(!have)
+                        specialists_res.push(employees[i]);
                 }
                 if(!find?.specialists.length) setSpecialists(specialists);
                 else setSpecialists(specialists_res);

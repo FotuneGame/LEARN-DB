@@ -11,11 +11,11 @@ spec:
   
   tls:
     - hosts:
-        - localhost # Replace with your domain or use nip.io for testing
+        - localhost # Replace with your domain or use nip.io for testing (188-127-254-63.nip.io)
       secretName: secret-tls
 
   rules:
-    - host: localhost # Replace with your domain or use nip.io for testing
+    - host: localhost # Replace with your domain or use nip.io for testing (188-127-254-63.nip.io)
       http:
         paths:
           - path: /?(.*)

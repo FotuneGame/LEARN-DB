@@ -1,6 +1,7 @@
 import axios from "axios";
+import {BASE_URL} from "@/shared/const";
 
-const urlUserAPI = "https://localhost/api/v1/backend/other"
+const urlUserAPI = BASE_URL+"/api/v1/backend/other"
 
 const api = axios.create({
     withCredentials: true,

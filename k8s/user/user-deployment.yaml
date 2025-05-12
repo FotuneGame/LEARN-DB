@@ -31,12 +31,20 @@ spec:
             - name: http
               containerPort: 6002
           env:
+            #Testing working without email
+            - name: TEST_EMAIL
+              value: "test@gmail.com"
+            - name: TEST_CODE
+              value: "123456"
+            #URL`S FOR SITE
+            - name: URL_CORS
+              value: "https://188-127-254-63.nip.io http://188-127-254-63.nip.io"
             - name: URL_SITE
-              value: "https://localhost/"
+              value: "https://188-127-254-63.nip.io/"
             - name: URL_BASE_INGRESS
-              value: "https://localhost/api/v1/user"
+              value: "https://188-127-254-63.nip.io/api/v1/user"
             - name: URL_OAUTH
-              value: "https://localhost/oauth"
+              value: "https://188-127-254-63.nip.io/oauth"
             #External services
             - name: MAIL_SERVICE
               value: "yandex"

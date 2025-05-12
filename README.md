@@ -95,3 +95,21 @@ kubectl exec kafka-0 -- kafka-consumer-groups.sh --describe --group user-service
     2) Google: https://console.cloud.google.com/
     3) Github: https://github.com/settings/developers
 
+#### Для деплоя
+1) Измените frontend/src/shared/const -> BASE_URL = ССЫЛКА НА ГЛАВНУЮ САЙТА
+2) Измените в user[backend]/.env -> URL_CORS = Добавить через пробел новые адреса для CORS 
+3) Изменить deployment.yaml файлы для user и backend 
+4) Имбуля команды:
+    ```
+    kubectl create secret docker-registry regcred --docker-server=docker.io --docker-username=grigorytitov --docker-password=31478409nw3KL --docker-email=titovgrisha04@gmail.com  
+
+    minikube delete --all --purge
+
+    sudo minikube start --driver=docker --force 
+
+    sudo minikube tunnel --cleanup --bind-address 0.0.0.0
+
+    sudo netstat -tulnp
+
+    sudo reboot
+    ```

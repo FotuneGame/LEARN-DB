@@ -31,12 +31,14 @@ spec:
             - name: http
               containerPort: 6001
           env:
+            - name: URL_CORS
+              value: "https://188-127-254-63.nip.io http://188-127-254-63.nip.io"
             - name: URL_SITE
-              value: "https://localhost"
+              value: "https://188-127-254-63.nip.io/"
             - name: URL_BASE_INGRESS
-              value: "https://localhost/api/v1/backend"
+              value: "https://188-127-254-63.nip.io/api/v1/backend"
             - name: ADMIN_EMAILS
-              value: "titovgrisha04@gmail.com"
+              value: "titovgrisha04@gmail.com test@gmail.com"
             #Internal services
             - name: DB_USER
               value: postgres

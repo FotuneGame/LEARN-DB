@@ -162,12 +162,12 @@ function Problems(){
                 }
             </div>
             <div className="flex flex-col md:flex-row gap-4">
-                <div className="flex flex-col gap-2 w-full">
+                <div className="flex flex-col gap-2 w-full md:w-1/2">
                     <h1 className="text-xl">Мои</h1>
                     <MyProblemsList callback={get} reload={reload}/>
                 </div>
                 <Separator className="hidden min-h-[200px] md:block" orientation="vertical"/>
-                <div className="flex flex-col gap-2 w-full">
+                <div className="flex flex-col gap-2 w-full md:w-1/2">
                     <h1 className="text-xl">Все</h1>
                     <ProblemsList callback={get} reload={reload} />
                 </div>

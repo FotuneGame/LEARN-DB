@@ -3,7 +3,6 @@ import { Form, FormControl, FormDescription, FormField, FormLabel, FormItem, For
 import { Loader2 } from "lucide-react"
 import React, { useState, useLayoutEffect } from "react"
 
-import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { ClientType, ClientProblemType } from "@/types";
@@ -31,7 +30,6 @@ function ClientProblemsForm (props: {
 }){
 
     const form = useForm<SubmitClientProblemsType>({
-        resolver: zodResolver(formSchema),
         defaultValues: {
             arr_problems: []
         }
@@ -70,10 +68,15 @@ function ClientProblemsForm (props: {
                 const res = [];
                 const all = await listAllOfProblems();
                 for(let i in all){
+                    let have = false;
                     for(let j in forClient){
-                        if(forClient[j].id!==all[i].id)
-                            res.push(all[i]);
+                        if(forClient[j].id===all[i].id){
+                            have = true;
+                            break;
+                        }
                     }
+                    if(!have)
+                        res.push(all[i]);
                 }
                 if(!forClient.length) setProblems(all);
                 else setProblems(res);
